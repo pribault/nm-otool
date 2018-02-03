@@ -1,6 +1,6 @@
 NAME = ft_otool
 CC = clang
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Ofast -fsanitize=address
 INC = include
 INCLUDE = ft_otool.h
 INCLUDES = $(INCLUDE:%.h=$(INC)/%.h)

@@ -1,12 +1,14 @@
 NAME = ft_nm
 CC = clang
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Ofast -fsanitize=address
 INC = include
 INCLUDE = ft_nm.h
 INCLUDES = $(INCLUDE:%.h=$(INC)/%.h)
 OBJ = src/ft_nm_obj
 SRC = src/ft_nm
-SRCS =	ft_nm.c
+SRCS =	ft_nm.c flags.c get.c\
+		fat.c mach.c archive.c\
+		endian.c endian_2.c
 OBJS = $(SRCS:%.c=$(OBJ)/%.o)
 LIBFT = libft
 INCLUDE_LIBS = -I $(LIBFT)/include
