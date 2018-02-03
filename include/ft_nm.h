@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:41:36 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/04 00:28:08 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/04 00:38:03 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,5 @@ void			*endian_mach_header_64(struct mach_header_64 *ptr);
 int				read_fat(t_nm *nm, void *ptr);
 int				read_mach(t_nm *nm, void *ptr);
 int				read_ar(t_nm *nm, void *ptr);
-
 
 #endif
