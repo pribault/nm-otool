@@ -1,27 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_isnumeric.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/05 14:59:59 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/01 18:43:40 by pribault         ###   ########.fr       */
+/*   Created: 2018/01/13 14:31:16 by pribault          #+#    #+#             */
+/*   Updated: 2018/02/01 10:31:43 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_strcmp(const char *s1, const char *s2)
+/*
+**	return 0 if not a number;
+**	return 1 if signed integer
+**	return 2 if unsigned integer
+**	return 3 if floating point number
+*/
+
+int	ft_isnumeric(char *s)
 {
-	int				i;
-	unsigned char	c1;
-	unsigned char	c2;
+	int		type;
+	int		i;
 
 	i = 0;
-	while (s1[i] == s2[i] && s1[i] && s2[i])
+	type = 2;
+	while (s[i] && s[i] > 8 && s[i] < 14)
 		i++;
-	c1 = s1[i];
-	c2 = s2[i];
-	return (c1 - c2);
+	if (s[i] && (s[i] == '+' || s[i] == '-'))
+	{
+		type = 1;
+		i++;
+	}
+	while (s[i])
+	{
+		if (s[i] < '0' || s[i] > '9')
+		{
+			if (s[i] != '.' || type == 3)
+				return (0);
+			type = 3;
+		}
+		i++;
+	}
+	return (type);
 }

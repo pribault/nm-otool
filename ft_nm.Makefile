@@ -21,23 +21,23 @@ $(OBJ):
 
 $(LIBFT)/libft.a:
 
-$(OBJ)%.o: $(SRC)%.c $(INCLUDES) $(LIBFT)/libft.a | $(OBJ)
-	@echo "\033[38;5;207m🍇  compiling $@\033[0m"
+$(OBJ)/%.o: $(SRC)/%.c $(INCLUDES) $(LIBFT)/libft.a | $(OBJ)
 	@$(CC) $(FLAGS) -I $(INC) $(INCLUDE_LIBS) -o $@ -c $<
-	@echo "\033[1A\033[K\033[38;5;207m🍇  $@ done\033[0m"
+	@echo "\033[38;5;207m🍇  $@ done\033[0m"
 
 $(NAME): $(OBJS)
-	@echo "\033[38;5;125m🐼  compiling $(NAME)\033[0m"
 	@$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(COMPILE_LIBS)
-	@echo "\033[1A\033[K\033[38;5;125m🐼  $(NAME) done\033[0m"
+	@echo "\033[38;5;125m🐼  $(NAME) done\033[0m"
 
 clean:
 	@rm -f $(OBJS)
+	@echo "\033[0m\033[38;5;45mobject files removed\033[0m"
 
 fclean: clean
 	@rm -f $(NAME)
+	@echo "\033[0m\033[38;5;87m$(NAME) removed\033[0m"
 
 norme:
-	@norminette $(OBJS:%.o=%.c) $(INCLUDES)
+	@norminette $(OBJS:$(OBJ)/%.o=$(SRC)/%.c) $(INCLUDES)
 
 re: fclean all

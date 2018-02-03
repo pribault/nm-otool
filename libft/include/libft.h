@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 16:13:23 by pribault          #+#    #+#             */
-/*   Updated: 2017/11/18 10:59:33 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/03 17:24:54 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <string.h>
 # include <fcntl.h>
 # include <dirent.h>
+# include <sys/wait.h>
+# include <inttypes.h>
 # include "ft_printf.h"
 # include "malloc.h"
 
@@ -31,7 +33,14 @@
 
 # define VECTOR_SIZE	4096
 # define BUFF_SIZE 		4096
-# define COS_MAX		4096
+
+# define WHITESPACES	"\a\b\t\n\v\f\r "
+
+# define BYTE(x)		((1 << x))
+
+# define ERROR_EXIT		BYTE(0)
+
+# define FLAG_PARAM_MAX	4
 
 /*
 ** structures
@@ -58,15 +67,90 @@ typedef struct		s_gnl_stack
 	int				fd;
 }					t_gnl_stack;
 
+typedef enum		e_param_type
+{
+	PARAM_STR,
+	PARAM_INTEGER,
+	PARAM_UNSIGNED,
+	PARAM_FLOAT,
+	PARAM_MAX
+}					t_param_type;
+
+typedef struct		s_short_flag
+{
+	char			c;
+	void			(*function)(void *data);
+}					t_short_flag;
+
+typedef struct		s_long_flag
+{
+	char			*str;
+	int				n_params;
+	t_param_type	params_type[FLAG_PARAM_MAX];
+	void			(*function)(char **args, int n, void *data);
+}					t_long_flag;
+
+typedef struct		s_flags
+{
+	t_short_flag	*shorts;
+	t_long_flag		*longs;
+	void			(*def)(char *s, void *data);
+}					t_flags;
+
+typedef enum		e_default_error
+{
+	ERROR_ALLOCATION,
+	ERROR_FILE,
+	ERROR_UNKNOWN,
+	ERROR_STR,
+	ERROR_INTEGER,
+	ERROR_UNSIGNED,
+	ERROR_FLOAT,
+	ERROR_CUSTOM,
+	ERROR_NOT_ENOUGHT_PARAM,
+	ERROR_TOO_MUSH_PARAMS,
+	ERROR_UNKNOW_PARAMETER_TYPE,
+	ERROR_UNKNOWN_PARAMETER,
+	ERROR_UNKNOWN_SHORT_FLAG,
+	ERROR_UNKNOWN_LONG_FLAG,
+	ERROR_FT_MAX
+}					t_default_error;
+
+typedef struct		s_error
+{
+	int				error_code;
+	char			*format;
+	uint8_t			opt;
+}					t_error;
+
+typedef struct		s_enum_func
+{
+	int				id;
+	int				(*function)(void*);
+}					t_enum_func;
+
+typedef enum		e_bool
+{
+	FT_FALSE,
+	FT_TRUE
+}					t_bool;
+
 /*
 ** prototypes
 */
 
+void				ft_error(int fd, int error, void *param);
+void				ft_add_errors(t_error *array);
+void				ft_get_flags(int argc, char **argv, t_flags *flags,
+					void *data);
+t_flags				*ft_get_flag_array(t_short_flag *chars, t_long_flag *strs,
+					void (*def)(char*, void*));
 double				ft_atof(char *str);
 int					ft_atoi(char *str);
 int					ft_atoi_base(char *str, char *base);
 unsigned int		ft_atou(char *str);
 void				ft_bzero(void *s, size_t n);
+char				*ft_execute(char *file, char **arg, char **env);
 char				ft_get_all_lines(int fd, char **str);
 int					ft_get_next_line(int const fd, char **line);
 char				*ft_itoa(int n);
@@ -105,9 +189,13 @@ int					ft_isalnum(int c);
 int					ft_isalpha(int c);
 int					ft_isascii(int c);
 int					ft_isdigit(int c);
+int					ft_isfloat(char *s);
+int					ft_isinteger(char *s);
+int					ft_isnumeric(char *s);
 char				ft_isof(int c, char *str);
 int					ft_isprime(int n);
 int					ft_isprint(int c);
+int					ft_isunsigned(char *s);
 
 /*
 **	maths functions
@@ -144,6 +232,7 @@ void				*ft_memset(void *b, int c, size_t len);
 void				**ft_alloc_array(size_t h, size_t w, size_t size);
 int					ft_arraylen(char **array);
 void				ft_free_array(void **array, size_t len);
+char				*ft_implode(char **array, char c);
 char				**ft_ls(char *name);
 
 /*
@@ -179,6 +268,8 @@ void				ft_vector_resize(t_vector *vector, size_t new_size);
 **	string functions
 */
 
+char				*ft_get_file_name_from_path(char *path);
+char				*ft_getenv(char **env, char *name);
 char				**ft_multisplit(char *str, char *sep);
 char				*ft_strcat(char *s1, const char *s2);
 char				*ft_strchr(const char *s, int c);
@@ -210,5 +301,12 @@ char				*ft_strstr(const char *big, const char *little);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strtrim(char const *s);
 void				ft_swap(void **a, void **b);
+
+/*
+**	global variables
+*/
+
+extern t_error		g_default_errors[];
+extern t_error		*g_ft_errors;
 
 #endif

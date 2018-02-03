@@ -2,19 +2,20 @@ FT_NM = ft_nm
 FT_OTOOL = ft_otool
 EXT = Makefile
 LIBFT = libft
+JOBS = 4
 
 .PHONY: all clean fclean re norme $(LIBFT)
 
 all: $(FT_NM) $(FT_OTOOL)
 
 $(LIBFT):
-	@make -C $(LIBFT)
+	@make -C $(LIBFT) -j$(JOBS)
 
 $(FT_NM): $(LIBFT)
-	@make -f $(FT_NM).$(EXT)
+	@make -f $(FT_NM).$(EXT) -j$(JOBS)
 
 $(FT_OTOOL): $(LIBFT)
-	@make -f $(FT_OTOOL).$(EXT)
+	@make -f $(FT_OTOOL).$(EXT) -j$(JOBS)
 
 clean:
 	@make -C $(LIBFT) clean

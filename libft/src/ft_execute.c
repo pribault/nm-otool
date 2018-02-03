@@ -1,23 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memdup.c                                        :+:      :+:    :+:   */
+/*   ft_execute.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/08 16:13:54 by pribault          #+#    #+#             */
-/*   Updated: 2018/01/14 16:30:11 by pribault         ###   ########.fr       */
+/*   Created: 2018/01/15 20:52:30 by pribault          #+#    #+#             */
+/*   Updated: 2018/01/21 20:43:30 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memdup(void *ptr, size_t size)
+char	*ft_execute(char *file, char **arg, char **env)
 {
-	void	*new;
+	int		fd[2];
+	char	*s;
+	pid_t	pid;
+	int		ret;
 
-	if (!ptr || !(new = malloc(size)))
+	s = NULL;
+	if (!arg || !env || !file || pipe(fd) < 0 || (pid = fork()) < 0)
 		return (NULL);
-	ft_memcpy(new, ptr, size);
-	return (new);
+	if (!pid)
+	{
+		dup2(fd[1], 1);
+		if (execve(file, arg, env) < 0)
+			exit(1);
+	}
+	else
+		wait4(pid, &ret, 0, NULL);
+	close(fd[1]);
+	ft_get_all_lines(fd[0], &s);
+	close(fd[0]);
+	free(fd);
+	return (s);
 }

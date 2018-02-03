@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memdup.c                                        :+:      :+:    :+:   */
+/*   ft_get_flag_array.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/08 16:13:54 by pribault          #+#    #+#             */
-/*   Updated: 2018/01/14 16:30:11 by pribault         ###   ########.fr       */
+/*   Created: 2018/02/02 11:34:38 by pribault          #+#    #+#             */
+/*   Updated: 2018/02/02 13:07:17 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memdup(void *ptr, size_t size)
+t_flags	*ft_get_flag_array(t_short_flag *shorts, t_long_flag *longs,
+		void (*def)(char*, void*))
 {
-	void	*new;
+	static t_flags	flags;
 
-	if (!ptr || !(new = malloc(size)))
-		return (NULL);
-	ft_memcpy(new, ptr, size);
-	return (new);
+	flags.shorts = shorts;
+	flags.longs = longs;
+	flags.def = def;
+	return (&flags);
 }

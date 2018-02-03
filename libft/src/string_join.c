@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 14:06:03 by pribault          #+#    #+#             */
-/*   Updated: 2017/07/17 20:36:51 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/01 18:42:03 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,17 @@ void	print_string(va_list va, char *new, size_t *j)
 	char	*s;
 
 	i = 0;
-	s = va_arg(va, char*);
+	if (!(s = va_arg(va, char*)))
+		s = "(null)";
 	while (s[i])
 		new[(*j)++] = s[i++];
 }
 
 size_t	get_string_len(va_list va)
 {
-	return (ft_strlen(va_arg(va, char*)));
+	char	*s;
+
+	if (!(s = va_arg(va, char*)))
+		s = "(null)";
+	return (ft_strlen(s));
 }
