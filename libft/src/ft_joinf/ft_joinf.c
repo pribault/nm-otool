@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 14:06:03 by pribault          #+#    #+#             */
-/*   Updated: 2017/07/17 20:36:11 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/04 20:29:50 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ size_t		get_next_arg(va_list va, const char *format, size_t *i)
 {
 	if (format[*i] == 'd' || format[*i] == 'i')
 		return (get_number_len(va, "0123456789"));
+	else if (format[*i] == 'u')
+		return (get_unsigned_len(va, "0123456789"));
 	else if (format[*i] == 'x')
 		return (get_number_len(va, "0123456789abcdef"));
 	else if (format[*i] == 'o')

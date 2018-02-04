@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/23 20:24:06 by pribault          #+#    #+#             */
-/*   Updated: 2017/10/29 12:47:57 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/04 14:38:04 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void		ft_lstsort(t_list *head, int (*sort)(void*, void*))
 		{
 			if (sort(list->content, list->next->content) > 0)
 			{
-				ft_swap(&list->content, &list->next->content);
+				ft_swap(&list->content, &list->next->content, sizeof(void*));
 				stop = 1;
 			}
 			list = list->next;

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 16:13:23 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/03 22:00:39 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/04 14:37:35 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,7 +300,7 @@ char				**ft_strsplit(char const *s, char c);
 char				*ft_strstr(const char *big, const char *little);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strtrim(char const *s);
-void				ft_swap(void **a, void **b);
+void				ft_swap(void *a, void *b, size_t size);
 
 /*
 **	global variables
