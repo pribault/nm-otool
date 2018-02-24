@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:39:41 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/04 17:47:53 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/24 10:12:51 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	reset_nm(t_nm *nm)
 	ft_vector_resize(nm->sect_32, 0);
 	ft_vector_resize(nm->syms_64, 0);
 	ft_vector_resize(nm->sect_64, 0);
-	clean_output(nm->out);
 	nm->ptr = NULL;
 	nm->stroff = 0;
 	nm->size = 0;
@@ -51,15 +50,15 @@ void	read_file(char *file, t_nm *nm)
 	t_ret		ret;
 
 	if ((ret = read_fat(nm, nm->ptr, file)) == RETURN_SUCCESS)
-		return (print_output(nm->out));
+		return (print_output(nm));
 	if (ret == RETURN_FILE_CORRUPTED)
 		return (ft_error(2, ERROR_FILE_CORRUPTED, file));
 	if ((ret = read_mach(nm, nm->ptr, file, TYPE_MACH)) == RETURN_SUCCESS)
-		return (print_output(nm->out));
+		return (print_output(nm));
 	if (ret == RETURN_FILE_CORRUPTED)
 		return (ft_error(2, ERROR_FILE_CORRUPTED, file));
 	if ((ret = read_ar(nm, nm->ptr, file)) == RETURN_SUCCESS)
-		return (print_output(nm->out));
+		return (print_output(nm));
 	if (ret == RETURN_FILE_CORRUPTED)
 		return (ft_error(2, ERROR_FILE_CORRUPTED, file));
 	ft_error(2, ERROR_UNKNOWN_FILE_FORMAT, file);
@@ -95,9 +94,13 @@ void	init_nm(t_nm *nm, int argc, char **argv)
 		!(nm->syms_32 = ft_vector_new(sizeof(struct nlist), 0)) ||
 		!(nm->syms_64 = ft_vector_new(sizeof(struct nlist_64), 0)) ||
 		!(nm->sect_32 = ft_vector_new(sizeof(struct section), 0)) ||
-		!(nm->sect_64 = ft_vector_new(sizeof(struct section_64), 0)) ||
-		!(nm->out = ft_vector_new(sizeof(char *), 0)))
+		!(nm->sect_64 = ft_vector_new(sizeof(struct section_64), 0)))
 		ft_error(2, ERROR_ALLOCATION, NULL);
+	if ((nm->out = open("/dev/fd/1", O_WRONLY)) == -1 ||
+		(nm->null = open("/dev/null", O_WRONLY)) == -1 ||
+		pipe(nm->pipe) == -1 || close(1) == -1 ||
+		dup2(nm->pipe[1], 1) == -1)
+		ft_error(2, ERROR_CUSTOM, "cannot instanciate file descriptors");
 	ft_add_errors((t_error*)&g_errors);
 	ft_get_flags(argc, argv, ft_get_flag_array((t_short_flag*)&g_short_flags,
 	(t_long_flag*)&g_long_flags, (void*)&get_default), nm);

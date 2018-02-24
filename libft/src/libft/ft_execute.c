@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 20:52:30 by pribault          #+#    #+#             */
-/*   Updated: 2018/01/21 20:43:30 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/10 20:58:31 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,5 @@ char	*ft_execute(char *file, char **arg, char **env)
 	close(fd[1]);
 	ft_get_all_lines(fd[0], &s);
 	close(fd[0]);
-	free(fd);
 	return (s);
 }

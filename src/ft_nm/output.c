@@ -5,33 +5,37 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/04 17:19:24 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/04 18:58:06 by pribault         ###   ########.fr       */
+/*   Created: 2018/02/24 09:58:25 by pribault          #+#    #+#             */
+/*   Updated: 2018/02/24 10:19:38 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
-void	clean_output(t_vector *out)
+void			clean_output(t_nm *nm)
 {
-	size_t	i;
+	static struct timeval	time = {0, 0};
+	static char				buffer[BUFF_SIZE];
+	fd_set					set;
+	int						ret;
 
-	i = out->n;
-	while (--i != (size_t)-1)
-		free(*(char**)ft_vector_get(out, i));
-	ft_vector_resize(out, 0);
+	FD_SET(nm->pipe[0], &set);
+	while (select(nm->pipe[0] + 1, &set, NULL, NULL, &time) > 0 &&
+		FD_ISSET(nm->pipe[0], &set) &&
+		(ret = read(nm->pipe[0], &buffer, sizeof(buffer))) > 0)
+		write(nm->null, &buffer, ret);
 }
 
-void	print_output(t_vector *out)
+void			print_output(t_nm *nm)
 {
-	size_t	i;
+	static struct timeval	time = {0, 0};
+	static char				buffer[BUFF_SIZE];
+	fd_set					set;
+	int						ret;
 
-	i = (size_t)-1;
-	while (++i < out->n)
-		ft_putendl(*(char**)ft_vector_get(out, i));
-}
-
-void	add_to_output(t_vector *out, char *s)
-{
-	ft_vector_add(out, &s);
+	FD_SET(nm->pipe[0], &set);
+	while (select(nm->pipe[0] + 1, &set, NULL, NULL, &time) > 0 &&
+		FD_ISSET(nm->pipe[0], &set) &&
+		(ret = read(nm->pipe[0], &buffer, sizeof(buffer))) > 0)
+		write(nm->out, &buffer, ret);
 }

@@ -9,7 +9,7 @@ JOBS = 4
 all: $(FT_NM) $(FT_OTOOL)
 
 $(LIBFT):
-	@make -C $(LIBFT) -j$(JOBS)
+	@make -C $(LIBFT)
 
 $(FT_NM): $(LIBFT)
 	@make -f $(FT_NM).$(EXT) -j$(JOBS)

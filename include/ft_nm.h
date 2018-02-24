@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:41:36 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/04 18:58:19 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/24 10:44:52 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,11 @@ typedef struct	s_nm
 	t_vector	*syms_64;
 	t_vector	*sect_32;
 	t_vector	*sect_64;
-	t_vector	*out;
 	uint32_t	stroff;
 	uint8_t		opt;
+	int			out;
+	int			null;
+	int			pipe[2];
 }				t_nm;
 
 /*
@@ -116,12 +118,23 @@ void			*get_prot(t_nm *nm, void *ptr, size_t size);
 char			*get_str(t_nm *nm, char *ptr);
 
 void			*get_fat_header(t_nm *nm, struct fat_header *ptr);
+
 void			*get_fat_arch(t_nm *nm, struct fat_arch *ptr);
 void			*get_fat_arch_64(t_nm *nm, struct fat_arch_64 *ptr);
+
 void			*get_mach_header(t_nm *nm, struct mach_header *ptr);
 void			*get_mach_header_64(t_nm *nm, struct mach_header_64 *ptr);
+
 void			*get_load_command(t_nm *nm, struct load_command *ptr);
+
 void			*get_symtab_command(t_nm *nm, struct symtab_command *ptr);
+
+void			*get_segment_command(t_nm *nm, struct segment_command *ptr);
+void			*get_segment_command_64(t_nm *nm,
+				struct segment_command_64 *ptr);
+
+void			*get_section(t_nm *nm, struct section *ptr);
+void			*get_section_64(t_nm *nm, struct section_64 *ptr);
 
 /*
 **	endian functions
@@ -140,12 +153,14 @@ t_ret			read_mach(t_nm *nm, void *ptr, char *name,
 				t_file_type type);
 t_ret			read_ar(t_nm *nm, void *ptr, char *name);
 
+t_ret			read_segment(t_nm *nm, void *ptr);
+t_ret			read_segment_64(t_nm *nm, void *ptr);
+
 /*
 **	output functions
 */
 
-void			add_to_output(t_vector *out, char *s);
-void			clean_output(t_vector *out);
-void			print_output(t_vector *out);
+void			clean_output(t_nm *nm);
+void			print_output(t_nm *nm);
 
 #endif

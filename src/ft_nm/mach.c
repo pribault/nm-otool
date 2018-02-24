@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 21:50:45 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/04 19:02:28 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/24 11:00:46 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ t_ret	read_mach_32(t_nm *nm, void *ptr)
 		if (!(cmd = get_load_command(nm, ptr + sizeof(struct mach_header) +
 			size)))
 			return (RETURN_FILE_CORRUPTED);
-		if (cmd->cmd == LC_SYMTAB)
-			if (!(read_symtab(nm, cmd)))
-				return (RETURN_FILE_CORRUPTED);
+		if ((cmd->cmd == LC_SYMTAB && !read_symtab(nm, cmd)) ||
+			(cmd->cmd == LC_SEGMENT && !read_segment(nm, cmd)))
+			return (RETURN_FILE_CORRUPTED);
 		size += cmd->cmdsize;
 	}
 	sort_symtab_32(nm);
@@ -96,9 +96,9 @@ t_ret	read_mach_64(t_nm *nm, void *ptr)
 		if (!(cmd = get_load_command(nm, ptr + sizeof(struct mach_header_64) +
 			size)))
 			return (RETURN_FILE_CORRUPTED);
-		if (cmd->cmd == LC_SYMTAB)
-			if (!(read_symtab_64(nm, cmd)))
-				return (RETURN_FILE_CORRUPTED);
+		if ((cmd->cmd == LC_SYMTAB && !read_symtab_64(nm, cmd)) ||
+			(cmd->cmd == LC_SEGMENT_64 && !read_segment_64(nm, cmd)))
+			return (RETURN_FILE_CORRUPTED);
 		size += cmd->cmdsize;
 	}
 	sort_symtab_64(nm);
@@ -111,7 +111,7 @@ t_ret	read_mach(t_nm *nm, void *ptr, char *name, t_file_type type)
 	uint32_t	*magic;
 
 	if (type == TYPE_MACH && nm->files->n > 1)
-		add_to_output(nm->out, ft_joinf("\n%s:", name));
+		ft_printf("\n%s:\n", name);
 	if (!(magic = get_prot(nm, ptr, sizeof(uint32_t))))
 		return (RETURN_UNKNOWN_FILE_FORMAT);
 	if (*magic == MH_MAGIC || *magic == MH_CIGAM)
