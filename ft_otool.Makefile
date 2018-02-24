@@ -31,7 +31,7 @@ $(OBJ)/%.o: $(SRC)/%.c $(INCLUDES) $(LIBFT)/libft.a | $(OBJ)
 	@printf "\033[0m\033[38;5;124m[\033[38;5;7m%3u%% \033[38;5;124m$(NAME)] \033[38;5;207m🍇  $@ done\033[0m\n" $(PERCENT)
 
 $(NAME): $(OBJS)
-	@if [ ! $N = 0 ]; then $(CC) $(FLAGS) -o $(NAME) $(OBJS) $(COMPILE_LIBS); echo "\033[0m\033[38;5;124m[∎∎∎∎ $(NAME)] \033[38;5;125m🐼  $(NAME) done\033[0m"; fi
+	@if [ ! $N = 0 ]; then $(CC) $(FLAGS) -o $(NAME) $(OBJS) $(COMPILE_LIBS); echo "\033[0m\033[38;5;124m[∎∎∎∎ $(NAME)] \033[38;5;125m🐼  $(NAME) done\033[0m"; else echo "\033[0m\033[38;5;124m[∎∎∎∎ $(NAME)] \033[38;5;125m🦋  nothing to be done done\033[0m"; fi
 
 clean:
 	@rm -f $(OBJS)
