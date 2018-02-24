@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:41:36 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/24 10:44:52 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/24 19:22:19 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 
 # define MACH_ENDIAN	BYTE(0)
 # define FAT_ENDIAN		BYTE(1)
+# define DEBUG			BYTE(7)
 # define ENDIAN(x)		((x & MACH_ENDIAN) ^ ((x & FAT_ENDIAN) >> 1))
 
 # define STR_MAX		128
@@ -51,6 +52,7 @@ typedef enum	e_nm_error
 	ERROR_MUNMAP,
 	ERROR_UNKNOWN_FILE_FORMAT,
 	ERROR_FILE_CORRUPTED,
+	ERROR_ON_FD,
 	ERROR_NM_MAX
 }				t_nm_error;
 
@@ -96,11 +98,16 @@ typedef struct	s_nm
 ******************
 */
 
+void			reset_nm(t_nm *nm);
+
 void			sort_symtab_32(t_nm *nm);
 void			sort_symtab_64(t_nm *nm);
 
 void			print_symtab_32(t_nm *nm);
 void			print_symtab_64(t_nm *nm);
+
+char			get_symbol_value_32(t_nm *nm, struct nlist *nlist);
+char			get_symbol_value_64(t_nm *nm, struct nlist_64 *nlist);
 
 /*
 **	flag functions
@@ -109,6 +116,7 @@ void			print_symtab_64(t_nm *nm);
 void			print_usage(void);
 void			get_default(char *file, t_nm *nm);
 void			get_file(char *file, t_nm *nm);
+void			set_debug(t_nm *nm);
 
 /*
 **	memory functions
@@ -162,5 +170,12 @@ t_ret			read_segment_64(t_nm *nm, void *ptr);
 
 void			clean_output(t_nm *nm);
 void			print_output(t_nm *nm);
+void			print_output_to(t_nm *nm, int fd);
+
+/*
+**	debug functions
+*/
+
+void			debug_full(t_nm *nm);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/04 14:30:21 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/24 11:16:50 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/24 20:31:43 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	sort_symtab_32(t_nm *nm)
 	struct nlist	*a;
 	struct nlist	*b;
 	size_t			i;
+	int				ret;
 
 	boolean = FT_FALSE;
 	while (!boolean)
@@ -28,8 +29,9 @@ void	sort_symtab_32(t_nm *nm)
 		{
 			a = ft_vector_get(nm->syms_32, i);
 			b = ft_vector_get(nm->syms_32, i + 1);
-			if (ft_strcmp(nm->ptr + nm->stroff + a->n_un.n_strx,
-				nm->ptr + nm->stroff + b->n_un.n_strx) > 0)
+			if ((ret = ft_strcmp(nm->ptr + nm->stroff + a->n_un.n_strx,
+				nm->ptr + nm->stroff + b->n_un.n_strx) > 0) ||
+				(!ret && a->n_value > b->n_value))
 			{
 				boolean = FT_FALSE;
 				ft_swap(a, b, sizeof(struct nlist));
@@ -79,19 +81,18 @@ void	sort_symtab_64(t_nm *nm)
 
 void	print_symtab_64(t_nm *nm)
 {
-	struct section_64	*section;
-	struct nlist		*nlist;
+	struct nlist_64		*nlist;
 	size_t				i;
+	char				c;
 
 	i = nm->syms_64->n;
 	while (--i != (size_t)-1 && (nlist = ft_vector_get(nm->syms_64, i)))
 	{
-		if ((nlist->n_type & N_TYPE) == N_UNDF)
-			ft_printf("                 U %s\n",
+		if ((c = get_symbol_value_64(nm, nlist)) == 'U')
+			ft_printf("                 %c %s\n", c,
 			nm->ptr + nm->stroff + nlist->n_un.n_strx);
-		else if ((section = ft_vector_get(nm->sect_64, nlist->n_sect)) &&
-			!ft_strcmp(&section->segname, SEG_TEXT))
-			ft_printf("%.16lx T %s\n", nlist->n_value + 0x100000000,
-		nm->ptr + nm->stroff + nlist->n_un.n_strx);
+		else
+			ft_printf("%.16lx %c %s\n", nlist->n_value, c,
+			nm->ptr + nm->stroff + nlist->n_un.n_strx);
 	}
 }

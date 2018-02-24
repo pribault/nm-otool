@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 21:50:45 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/24 11:00:46 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/24 13:06:16 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int		read_symtab(t_nm *nm, void *ptr)
 
 	if (!(symtab = get_symtab_command(nm, ptr)) ||
 		!(nlist = get_prot(nm, nm->ptr + symtab->symoff,
-		sizeof(struct nlist) * symtab->nsyms)))
+		sizeof(struct nlist) * symtab->nsyms)) ||
+		nm->stroff)
 		return (0);
 	i = (uint32_t)-1;
 	nm->stroff = symtab->stroff;
@@ -40,7 +41,8 @@ int		read_symtab_64(t_nm *nm, void *ptr)
 
 	if (!(symtab = get_symtab_command(nm, ptr)) ||
 		!(nlist = get_prot(nm, nm->ptr + symtab->symoff,
-		sizeof(struct nlist_64) * symtab->nsyms)))
+		sizeof(struct nlist_64) * symtab->nsyms)) ||
+		nm->stroff)
 		return (0);
 	i = (uint32_t)-1;
 	nm->stroff = symtab->stroff;
@@ -65,6 +67,7 @@ t_ret	read_mach_32(t_nm *nm, void *ptr)
 		return (RETURN_FILE_CORRUPTED);
 	size = 0;
 	i = (uint32_t)-1;
+	nm->stroff = 0;
 	while (++i < header->ncmds)
 	{
 		if (!(cmd = get_load_command(nm, ptr + sizeof(struct mach_header) +
@@ -77,6 +80,7 @@ t_ret	read_mach_32(t_nm *nm, void *ptr)
 	}
 	sort_symtab_32(nm);
 	print_symtab_32(nm);
+	debug_full(nm);
 	return (RETURN_SUCCESS);
 }
 
@@ -91,6 +95,7 @@ t_ret	read_mach_64(t_nm *nm, void *ptr)
 		return (RETURN_FILE_CORRUPTED);
 	size = 0;
 	i = (uint32_t)-1;
+	nm->stroff = 0;
 	while (++i < header->ncmds)
 	{
 		if (!(cmd = get_load_command(nm, ptr + sizeof(struct mach_header_64) +
@@ -103,6 +108,7 @@ t_ret	read_mach_64(t_nm *nm, void *ptr)
 	}
 	sort_symtab_64(nm);
 	print_symtab_64(nm);
+	debug_full(nm);
 	return (RETURN_SUCCESS);
 }
 

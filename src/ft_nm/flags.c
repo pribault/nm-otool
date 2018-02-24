@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 21:16:21 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/04 17:00:05 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/24 12:44:40 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,9 @@ void	print_usage(void)
 		return ;
 	is_printed = FT_TRUE;
 	ft_printf("./ft_nm <file>\n");
+}
+
+void	set_debug(t_nm *nm)
+{
+	nm->opt |= DEBUG;
 }

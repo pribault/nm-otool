@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 21:55:54 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/17 19:28:30 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/24 14:37:28 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*get_prot(t_nm *nm, void *ptr, size_t size)
 {
-	return ((ptr >= nm->ptr && (size_t)(ptr - nm->ptr) <= nm->size + size) ?
+	return ((ptr >= nm->ptr && nm->ptr + nm->size >= ptr + size) ?
 	ptr : NULL);
 }
 

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:39:41 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/24 10:12:51 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/24 19:22:35 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@
 static t_short_flag	g_short_flags[] =
 {
 	{'h', (void*)&print_usage},
+	{'d', (void*)&set_debug},
 	{0, NULL}
 };
 
 static t_long_flag	g_long_flags[] =
 {
 	{"help", 0, {0}, (void*)&print_usage},
+	{"debug", 0, {0}, (void*)&set_debug},
 	{NULL, 0, {0}, NULL}
 };
 
@@ -30,6 +32,7 @@ static t_error	g_errors[] =
 	{ERROR_MUNMAP, "failed to unmap %s", 0},
 	{ERROR_UNKNOWN_FILE_FORMAT, "'%s': unknown file format", 0},
 	{ERROR_FILE_CORRUPTED, "'%s': file corrupted", 0},
+	{ERROR_ON_FD, "error setting file descriptors", ERROR_EXIT},
 	{0, NULL, 0}
 };
 
@@ -98,9 +101,8 @@ void	init_nm(t_nm *nm, int argc, char **argv)
 		ft_error(2, ERROR_ALLOCATION, NULL);
 	if ((nm->out = open("/dev/fd/1", O_WRONLY)) == -1 ||
 		(nm->null = open("/dev/null", O_WRONLY)) == -1 ||
-		pipe(nm->pipe) == -1 || close(1) == -1 ||
-		dup2(nm->pipe[1], 1) == -1)
-		ft_error(2, ERROR_CUSTOM, "cannot instanciate file descriptors");
+		pipe(nm->pipe) == -1)
+		ft_error(2, ERROR_ON_FD, NULL);
 	ft_add_errors((t_error*)&g_errors);
 	ft_get_flags(argc, argv, ft_get_flag_array((t_short_flag*)&g_short_flags,
 	(t_long_flag*)&g_long_flags, (void*)&get_default), nm);
@@ -108,16 +110,16 @@ void	init_nm(t_nm *nm, int argc, char **argv)
 
 int		main(int argc, char **argv)
 {
-	size_t	i;
-	t_nm	nm;
+	static char	*default_file = "a.out";
+	size_t		i;
+	t_nm		nm;
 
 	init_nm(&nm, argc, argv);
 	if (!nm.files->n)
-	{
-		print_usage();
-		return (1);
-	}
+		ft_vector_add(nm.files, &default_file);
 	i = (size_t)-1;
+	if (close(1) == -1 || dup2(nm.pipe[1], 1) == -1)
+		ft_error(2, ERROR_ON_FD, NULL);
 	while (++i < nm.files->n)
 		get_file(*(char**)ft_vector_get(nm.files, i), &nm);
 	return (0);

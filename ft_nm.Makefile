@@ -9,7 +9,8 @@ SRC = src/ft_nm
 SRCS =	ft_nm.c flags.c endian.c\
 		fat.c mach.c archive.c\
 		get.c get_2.c get_3.c\
-		symtab.c output.c segment.c
+		symtab.c output.c segment.c\
+		debug.c symbol.c
 OBJS = $(SRCS:%.c=$(OBJ)/%.o)
 LIBFT = libft
 INCLUDE_LIBS = -I $(LIBFT)/include

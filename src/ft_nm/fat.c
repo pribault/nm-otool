@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 21:47:38 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/04 17:41:18 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/24 12:01:18 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ t_ret	read_fat_32(t_nm *nm, void *ptr, char *name)
 {
 	struct fat_arch		*arch;
 
+	reset_nm(nm);
 	arch = get_fat_arch(nm, ptr);
 	if (read_mach(nm, nm->ptr + arch->offset, name, TYPE_FAT) !=
 		RETURN_SUCCESS)
@@ -27,6 +28,7 @@ t_ret	read_fat_64(t_nm *nm, void *ptr, char *name)
 {
 	struct fat_arch_64	*arch;
 
+	reset_nm(nm);
 	arch = get_fat_arch_64(nm, ptr);
 	if (read_mach(nm, nm->ptr + arch->offset, name, TYPE_FAT) !=
 		RETURN_SUCCESS)

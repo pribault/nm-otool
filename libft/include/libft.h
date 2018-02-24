@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 16:13:23 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/04 14:37:35 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/24 11:48:59 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ typedef struct		s_long_flag
 	char			*str;
 	int				n_params;
 	t_param_type	params_type[FLAG_PARAM_MAX];
-	void			(*function)(char **args, int n, void *data);
+	void			(*function)(void *data, char **args, int n);
 }					t_long_flag;
 
 typedef struct		s_flags

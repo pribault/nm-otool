@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 12:51:11 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/02 15:50:01 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/24 11:49:25 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int	ft_get_long_flag(int argc, char **argv, t_long_flag *flags,
 			}
 			if (!ft_test_long_flag(&flags[i], &argv[1]))
 				return (flags[i].n_params);
-			flags[i].function(&argv[1], flags[i].n_params, data);
+			flags[i].function(data, &argv[1], flags[i].n_params);
 			return (flags[i].n_params);
 		}
 	ft_error(2, ERROR_UNKNOWN_LONG_FLAG, &argv[0][2]);
