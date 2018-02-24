@@ -22,18 +22,20 @@ $(NAME):
 
 $(NAME_SO): $(NAME)
 	@$(CC) $(FLAGS) -shared -o $@ -L . -lft
-	@echo "\033[0m\033[38;5;12m[∎∎∎∎ $($@)] \033[0m🦁  \033[38;5;214m$@ done\033[0m"
+	@echo "\033[0m\033[38;5;12m[∎∎∎∎ libft] \033[0m🦁  \033[38;5;214m$@ done\033[0m"
 
 clean:
 	@make -f $(DIR)/$(LIBFT).$(EXT) clean
 	@make -f $(DIR)/$(MALLOC).$(EXT) clean
 	@make -f $(DIR)/$(FT_PRINTF).$(EXT) clean
 	@make -f $(DIR)/$(FT_JOINF).$(EXT) clean
+	@echo "\033[0m\033[38;5;12m[∎∎∎∎ libft] \033[0m\033[38;5;45mobject files removed\033[0m"
 
 fclean:
 	@rm -f $(NAME)
 	@rm -f $(NAME_SO)
 	@rm -rf .obj
+	@echo "\033[0m\033[38;5;12m[∎∎∎∎ libft] \033[0m\033[38;5;87m$(NAME) and $(NAME_SO) removed\033[0m"
 
 norme:
 	@make -f $(DIR)/$(LIBFT).$(EXT) norme
