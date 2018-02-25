@@ -6,20 +6,31 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/04 10:00:46 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/04 14:27:20 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/25 13:52:33 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
+
+void	*get_uint32(t_nm *nm, uint32_t *ptr)
+{
+	if (!get_prot(nm, ptr, sizeof(uint32_t)))
+		return (NULL);
+	if (ENDIAN(nm->opt))
+		endian(ptr, sizeof(uint32_t));
+	return (ptr);
+}
 
 void	*get_mach_header(t_nm *nm, struct mach_header *ptr)
 {
 	if (!get_prot(nm, ptr, sizeof(struct mach_header)))
 		return (NULL);
 	if (ptr->magic == MH_CIGAM)
-		nm->opt &= ~MACH_ENDIAN;
-	else if (ptr->magic == MH_MAGIC)
 		nm->opt |= MACH_ENDIAN;
+	else if (ptr->magic == MH_MAGIC)
+		nm->opt &= ~MACH_ENDIAN;
+	else
+		return (NULL);
 	if (ENDIAN(nm->opt))
 	{
 		endian(&ptr->magic, sizeof(uint32_t));
@@ -38,9 +49,9 @@ void	*get_mach_header_64(t_nm *nm, struct mach_header_64 *ptr)
 	if (!get_prot(nm, ptr, sizeof(struct mach_header_64)))
 		return (NULL);
 	if (ptr->magic == MH_CIGAM_64)
-		nm->opt &= ~MACH_ENDIAN;
-	else if (ptr->magic == MH_MAGIC_64)
 		nm->opt |= MACH_ENDIAN;
+	else if (ptr->magic == MH_MAGIC_64)
+		nm->opt &= ~MACH_ENDIAN;
 	if (ENDIAN(nm->opt))
 	{
 		endian(&ptr->magic, sizeof(uint32_t));

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/04 14:30:21 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/24 20:31:43 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/25 13:54:54 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void	sort_symtab_32(t_nm *nm)
 			a = ft_vector_get(nm->syms_32, i);
 			b = ft_vector_get(nm->syms_32, i + 1);
 			if ((ret = ft_strcmp(nm->ptr + nm->stroff + a->n_un.n_strx,
-				nm->ptr + nm->stroff + b->n_un.n_strx) > 0) ||
-				(!ret && a->n_value > b->n_value))
+				nm->ptr + nm->stroff + b->n_un.n_strx)) < 0 ||
+				(!ret && a->n_value < b->n_value))
 			{
 				boolean = FT_FALSE;
 				ft_swap(a, b, sizeof(struct nlist));
@@ -44,21 +44,27 @@ void	print_symtab_32(t_nm *nm)
 {
 	struct nlist	*nlist;
 	size_t			i;
+	char			c;
 
 	i = nm->syms_32->n;
-	while (--i != (size_t)-1)
+	while (--i != (size_t)-1 && (nlist = ft_vector_get(nm->syms_32, i)))
 	{
-		nlist = ft_vector_get(nm->syms_32, i);
-		ft_printf("\t%s\n", nm->ptr + nm->stroff + nlist->n_un.n_strx);
+		if ((c = get_symbol_value_32(nm, nlist)) == 'U')
+			ft_printf("         %c %s\n", c,
+			nm->ptr + nm->stroff + nlist->n_un.n_strx);
+		else
+			ft_printf("%.8lx %c %s\n", nlist->n_value, c,
+			nm->ptr + nm->stroff + nlist->n_un.n_strx);
 	}
 }
 
 void	sort_symtab_64(t_nm *nm)
 {
 	t_bool			boolean;
-	struct nlist	*a;
-	struct nlist	*b;
+	struct nlist_64	*a;
+	struct nlist_64	*b;
 	size_t			i;
+	int				ret;
 
 	boolean = FT_FALSE;
 	while (!boolean)
@@ -69,11 +75,12 @@ void	sort_symtab_64(t_nm *nm)
 		{
 			a = ft_vector_get(nm->syms_64, i);
 			b = ft_vector_get(nm->syms_64, i + 1);
-			if (ft_strcmp(nm->ptr + nm->stroff + a->n_un.n_strx,
-				nm->ptr + nm->stroff + b->n_un.n_strx) < 0)
+			if ((ret = ft_strcmp(nm->ptr + nm->stroff + a->n_un.n_strx,
+				nm->ptr + nm->stroff + b->n_un.n_strx)) < 0 ||
+				(!ret && a->n_value < b->n_value))
 			{
 				boolean = FT_FALSE;
-				ft_swap(a, b, sizeof(struct nlist));
+				ft_swap(a, b, sizeof(struct nlist_64));
 			}
 		}
 	}

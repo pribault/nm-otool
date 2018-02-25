@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 21:47:38 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/24 12:01:18 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/25 11:40:35 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,49 @@
 
 t_ret	read_fat_32(t_nm *nm, void *ptr, char *name)
 {
+	void				*save_ptr;
+	size_t				save_size;
 	struct fat_arch		*arch;
 
-	reset_nm(nm);
-	arch = get_fat_arch(nm, ptr);
-	if (read_mach(nm, nm->ptr + arch->offset, name, TYPE_FAT) !=
-		RETURN_SUCCESS)
+	if (!(arch = get_fat_arch(nm, ptr)))
 		return (RETURN_FILE_CORRUPTED);
+	save_ptr = nm->ptr;
+	save_size = nm->size;
+	nm->ptr = nm->ptr + arch->offset;
+	nm->size -= (nm->ptr - save_ptr);
+	if (read_mach(nm, nm->ptr, name, TYPE_FAT) !=
+		RETURN_SUCCESS)
+	{
+		nm->ptr = save_ptr;
+		nm->size = save_size;
+		return (RETURN_FILE_CORRUPTED);
+	}
+	nm->ptr = save_ptr;
+	nm->size = save_size;
 	return (RETURN_SUCCESS);
 }
 
 t_ret	read_fat_64(t_nm *nm, void *ptr, char *name)
 {
+	void				*save_ptr;
+	size_t				save_size;
 	struct fat_arch_64	*arch;
 
-	reset_nm(nm);
-	arch = get_fat_arch_64(nm, ptr);
-	if (read_mach(nm, nm->ptr + arch->offset, name, TYPE_FAT) !=
-		RETURN_SUCCESS)
+	if (!(arch = get_fat_arch_64(nm, ptr)))
 		return (RETURN_FILE_CORRUPTED);
+	save_ptr = nm->ptr;
+	save_size = nm->size;
+	nm->ptr = nm->ptr + arch->offset;
+	nm->size -= (nm->ptr - save_ptr);
+	if (read_mach(nm, nm->ptr, name, TYPE_FAT) !=
+		RETURN_SUCCESS)
+	{
+		nm->ptr = save_ptr;
+		nm->size = save_size;
+		return (RETURN_FILE_CORRUPTED);
+	}
+	nm->ptr = save_ptr;
+	nm->size = save_size;
 	return (RETURN_SUCCESS);
 }
 

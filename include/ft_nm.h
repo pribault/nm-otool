@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:41:36 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/24 19:22:19 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/25 15:59:55 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,14 @@
 */
 
 # include <mach/machine.h>
+# include <mach-o/ranlib.h>
 # include <mach-o/loader.h>
 # include <mach-o/nlist.h>
 # include <mach-o/fat.h>
 # include <sys/stat.h>
 # include <sys/mman.h>
+# include <ar.h>
+
 # include "libft.h"
 
 /*
@@ -36,7 +39,7 @@
 # define MACH_ENDIAN	BYTE(0)
 # define FAT_ENDIAN		BYTE(1)
 # define DEBUG			BYTE(7)
-# define ENDIAN(x)		((x & MACH_ENDIAN) ^ ((x & FAT_ENDIAN) >> 1))
+# define ENDIAN(x)		(x & MACH_ENDIAN)
 
 # define STR_MAX		128
 
@@ -124,6 +127,7 @@ void			set_debug(t_nm *nm);
 
 void			*get_prot(t_nm *nm, void *ptr, size_t size);
 char			*get_str(t_nm *nm, char *ptr);
+void			*get_uint32(t_nm *nm, uint32_t *ptr);
 
 void			*get_fat_header(t_nm *nm, struct fat_header *ptr);
 
@@ -143,6 +147,11 @@ void			*get_segment_command_64(t_nm *nm,
 
 void			*get_section(t_nm *nm, struct section *ptr);
 void			*get_section_64(t_nm *nm, struct section_64 *ptr);
+
+void			*get_nlist(t_nm *nm, struct nlist *ptr);
+void			*get_nlist_64(t_nm *nm, struct nlist_64 *ptr);
+
+char			*get_cpu_type(cpu_type_t type);
 
 /*
 **	endian functions

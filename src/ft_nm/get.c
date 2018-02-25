@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 21:55:54 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/24 14:37:28 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/25 13:50:56 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	*get_fat_header(t_nm *nm, struct fat_header *ptr)
 		nm->opt |= FAT_ENDIAN;
 	else if (ptr->magic == FAT_MAGIC || ptr->magic == FAT_MAGIC_64)
 		nm->opt &= ~FAT_ENDIAN;
+	else
+		return (NULL);
 	if (nm->opt | FAT_ENDIAN)
 	{
 		endian(&ptr->magic, sizeof(uint32_t));
