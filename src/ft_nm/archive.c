@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 21:50:56 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/25 16:21:43 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/25 16:37:58 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static t_ret	read_file_in_ar(char *lib, char *file, t_nm *nm)
 	return (RETURN_UNKNOWN_FILE_FORMAT);
 }
 
-t_ret	read_ar(t_nm *nm, void *ptr, char *name)
+t_ret			read_ar(t_nm *nm, void *ptr, char *name)
 {
 	struct ar_hdr	*header;
 	char			*ar;
@@ -65,11 +65,11 @@ t_ret	read_ar(t_nm *nm, void *ptr, char *name)
 	save_size = nm->size;
 	while ((header = get_prot(nm, ptr, sizeof(struct ar_hdr))))
 	{
-		if (strncmp(&header->ar_fmag, ARFMAG, 2) ||
+		if (strncmp((char*)&header->ar_fmag, ARFMAG, 2) ||
 			!get_prot(nm, (void*)header + sizeof(struct ar_hdr),
-			ft_atou(&header->ar_size)))
+			ft_atou((char*)&header->ar_size)))
 			return (RETURN_FILE_CORRUPTED);
-		if (!strncmp(&header->ar_name, "#1/", 3))
+		if (!strncmp((char*)&header->ar_name, "#1/", 3))
 		{
 			nm->ptr = (void*)header + sizeof(struct ar_hdr) +
 			ft_atou((void*)(&header->ar_name) + 3);
@@ -80,11 +80,11 @@ t_ret	read_ar(t_nm *nm, void *ptr, char *name)
 		{
 			nm->ptr = (void*)header + sizeof(struct ar_hdr);
 			nm->size = save_ptr + save_size - nm->ptr;
-			read_file_in_ar(name, get_name(&header->ar_name), nm);
+			read_file_in_ar(name, get_name((char*)&header->ar_name), nm);
 		}
 		nm->ptr = save_ptr;
 		nm->size = save_size;
-		ptr += sizeof(struct ar_hdr) + ft_atou(&header->ar_size);
+		ptr += sizeof(struct ar_hdr) + ft_atou((char*)&header->ar_size);
 	}
 	return (RETURN_SUCCESS);
 }

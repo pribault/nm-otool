@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:39:41 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/25 10:44:45 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/25 16:37:47 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,8 @@ int		main(int argc, char **argv)
 	if (!nm.files->n)
 		ft_vector_add(nm.files, &default_file);
 	i = (size_t)-1;
-	// if (close(1) == -1 || dup2(nm.pipe[1], 1) == -1)
-	// 	ft_error(2, ERROR_ON_FD, NULL);
+	if (close(1) == -1 || dup2(nm.pipe[1], 1) == -1)
+		ft_error(2, ERROR_ON_FD, NULL);
 	while (++i < nm.files->n)
 		get_file(*(char**)ft_vector_get(nm.files, i), &nm);
 	return (0);

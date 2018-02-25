@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/25 11:10:12 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/25 13:47:26 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/25 16:38:08 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*get_cpu_type_2(cpu_type_t type)
 	return ("unknown");
 }
 
-char	*get_cpu_type(cpu_type_t type)
+char		*get_cpu_type(cpu_type_t type)
 {
 	if (type == CPU_TYPE_ANY)
 		return ("any");
@@ -52,7 +52,7 @@ char	*get_cpu_type(cpu_type_t type)
 	return (get_cpu_type_2(type));
 }
 
-void	*get_nlist(t_nm *nm, struct nlist *ptr)
+void		*get_nlist(t_nm *nm, struct nlist *ptr)
 {
 	if (!get_prot(nm, ptr, sizeof(struct nlist)))
 		return (NULL);
@@ -67,7 +67,7 @@ void	*get_nlist(t_nm *nm, struct nlist *ptr)
 	return (ptr);
 }
 
-void	*get_nlist_64(t_nm *nm, struct nlist_64 *ptr)
+void		*get_nlist_64(t_nm *nm, struct nlist_64 *ptr)
 {
 	if (!get_prot(nm, ptr, sizeof(struct nlist_64)))
 		return (NULL);
