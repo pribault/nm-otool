@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 21:50:56 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/25 16:37:58 by pribault         ###   ########.fr       */
+/*   Updated: 2018/02/25 17:14:39 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ static t_ret	read_file_in_ar(char *lib, char *file, t_nm *nm)
 {
 	t_ret		ret;
 
+	if (!file || !get_str(nm, file))
+		return (RETURN_FILE_CORRUPTED);
 	if (!strcmp(file, SYMDEF_SORTED) || !strcmp(file, SYMDEF))
 		return (RETURN_SUCCESS);
 	ft_printf("\n%s(%s):\n", lib, file);
-	if (!file)
-		return (RETURN_FILE_CORRUPTED);
 	if ((ret = read_fat(nm, nm->ptr, file)) !=
 		RETURN_UNKNOWN_FILE_FORMAT)
 		return (ret);
@@ -74,13 +74,24 @@ t_ret			read_ar(t_nm *nm, void *ptr, char *name)
 			nm->ptr = (void*)header + sizeof(struct ar_hdr) +
 			ft_atou((void*)(&header->ar_name) + 3);
 			nm->size = save_ptr + save_size - nm->ptr;
-			read_file_in_ar(name, (void*)header + sizeof(struct ar_hdr), nm);
+			if (read_file_in_ar(name, (void*)header + sizeof(struct ar_hdr),
+				nm) == RETURN_FILE_CORRUPTED)
+			{
+				nm->ptr = save_ptr;
+				nm->size = save_size;
+				return (RETURN_FILE_CORRUPTED);
+			}
 		}
 		else
 		{
 			nm->ptr = (void*)header + sizeof(struct ar_hdr);
 			nm->size = save_ptr + save_size - nm->ptr;
-			read_file_in_ar(name, get_name((char*)&header->ar_name), nm);
+			if (read_file_in_ar(name, get_name((char*)&header->ar_name), nm))
+			{
+				nm->ptr = save_ptr;
+				nm->size = save_size;
+				return (RETURN_FILE_CORRUPTED);
+			}
 		}
 		nm->ptr = save_ptr;
 		nm->size = save_size;
