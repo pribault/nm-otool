@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_vector_new.c                                    :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/31 23:37:46 by pribault          #+#    #+#             */
-/*   Updated: 2017/10/18 18:47:51 by pribault         ###   ########.fr       */
+/*   Created: 2018/03/08 23:02:19 by pribault          #+#    #+#             */
+/*   Updated: 2018/03/10 15:01:21 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "prototypes.h"
 
-t_vector	*ft_vector_new(size_t type, size_t n)
+void	malloc_error(int error, void *param)
 {
-	t_vector	*new;
+	char		*debug;
+	uint32_t	level;
 
-	if (!(new = (t_vector*)malloc(sizeof(t_vector))))
-		return (NULL);
-	new->n = n;
-	new->type = type;
-	new->size = VECTOR_SIZE * ((type * n - 1) / VECTOR_SIZE) +
-	VECTOR_SIZE;
-	if (!(new->ptr = malloc(new->size)))
-	{
-		free(new);
-		return (NULL);
-	}
-	ft_bzero(new->ptr, new->size);
-	return (new);
+	if ((debug = getenv("MALLOC_DEBUG")))
+		level = ft_atou(debug);
+	else
+		level = 0;
+	pthread_mutex_unlock(&g_env.mutex);
+	if (level & 1)
+		ft_error(2, error, param);
+	pthread_mutex_lock(&g_env.mutex);
+	if (level & 2)
+		abort();
 }

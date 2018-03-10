@@ -103,7 +103,7 @@ SRC =	ft_abs.c\
 		ft_vector_del.c\
 		ft_vector_del_one.c\
 		ft_vector_get.c\
-		ft_vector_new.c\
+		ft_vector_init.c\
 		ft_vector_printhex.c\
 		ft_vector_resize.c
 DIR = libft
@@ -132,18 +132,18 @@ $(OBJ_DIR)/$(DIR)/%.o: $(SRC_DIR)/$(DIR)/%.c $(INCLUDE) | $(OBJ_DIR)/$(DIR)
 	@$(CC) $(FLAGS) -fPIC -I include -o $@ -c $<
 	@$(eval N=$(shell echo $$(($(N)+1))))
 	@$(eval PERCENT=$(shell echo $$((($(N)*100)/$(MAX)))))
-	@printf "\033[0m\033[38;5;12m[\033[38;5;7m%3u%% \033[38;5;12m$(DIR)] \033[0m🌶  \033[38;5;226m$(@:$(OBJ_DIR)/$(DIR)/%.o=%.o) done\033[0m\n" $(PERCENT)
+	@printf "\033[0m\033[38;5;166m[$(DIR) \033[38;5;7m%3u%%\033[38;5;166m] \033[0m🌶  \033[38;5;226m$(@:$(OBJ_DIR)/$(DIR)/%.o=%.o) done\033[0m\n" $(PERCENT)
 
 $(NAME): $(OBJ)
-	@if [ ! $(N) = 0 ]; then ar rc $(NAME) $(OBJ); ranlib $(NAME); echo "\033[0m\033[38;5;12m[∎∎∎∎ $(DIR)] \033[0m🐹  \033[38;5;214m$@ done\033[0m"; fi
+	@if [ ! $(N) = 0 ]; then ar rc $(NAME) $(OBJ); ranlib $(NAME); echo "\033[0m\033[38;5;166m[$(DIR) ∎∎∎∎] \033[0m🐹  \033[38;5;214m$@ done\033[0m"; fi
 
 clean:
 	@rm -rf $(OBJ_DIR)/$(DIR)
-	@echo "\033[0m\033[38;5;12m[∎∎∎∎ $(DIR)] \033[0m\033[38;5;45mobject files removed\033[0m"
+	@echo "\033[0m\033[38;5;166m[$(DIR) ∎∎∎∎] \033[0m\033[38;5;45mobject files removed\033[0m"
 
 fclean: clean
 	@rm -f $(NAME)
-	@echo "\033[0m\033[38;5;12m[∎∎∎∎ $(DIR)] \033[0m\033[38;5;87m$(NAME) and $(LIBSO) removed\033[0m"
+	@echo "\033[0m\033[38;5;166m[$(DIR) ∎∎∎∎] \033[0m\033[38;5;87m$(NAME) and $(LIBSO) removed\033[0m"
 
 norme:
 	@norminette $(OBJ:$(OBJ_DIR)/%.o=$(SRC_DIR)/%.c) $(INCLUDE)

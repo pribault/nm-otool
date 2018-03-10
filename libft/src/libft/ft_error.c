@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 13:15:41 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/02 13:16:46 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/10 14:51:37 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ t_error	g_default_errors[] =
 	{ERROR_UNKNOWN_PARAMETER, "unknown parameter '%s'", 0},
 	{ERROR_UNKNOWN_SHORT_FLAG, "unknown short flag '%c'", 0},
 	{ERROR_UNKNOWN_LONG_FLAG, "unknown long flag '%s'", 0},
+	{ERROR_MMAP, "cannot allocate region", 0},
+	{ERROR_INVALID_FREE, "invalid free for %p", 0},
+	{ERROR_INVALID_POINTER, "invalid pointer %p", 0},
 	{0, NULL, 0}
 };
 

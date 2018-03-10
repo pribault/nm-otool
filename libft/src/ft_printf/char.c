@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/10 11:39:46 by pribault          #+#    #+#             */
-/*   Updated: 2017/07/19 13:41:50 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/10 13:32:24 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,26 +22,26 @@ int		print_wchar(wchar_t c)
 {
 	if (c <= 0x7F)
 	{
-		ft_putchar(c);
+		ft_putchar_fd(c, 1);
 		return (1);
 	}
 	if (c <= 0x7FF)
 	{
-		ft_putchar((c >> 6) + 0xC0);
-		ft_putchar((c & 0x3F) + 0x80);
+		ft_putchar_fd((c >> 6) + 0xC0, 1);
+		ft_putchar_fd((c & 0x3F) + 0x80, 1);
 		return (2);
 	}
 	if (c <= 0xFFFF)
 	{
-		ft_putchar((c >> 12) + 0xE0);
-		ft_putchar(((c >> 6) & 0x3F) + 0x80);
-		ft_putchar((c & 0x3F) + 0x80);
+		ft_putchar_fd((c >> 12) + 0xE0, 1);
+		ft_putchar_fd(((c >> 6) & 0x3F) + 0x80, 1);
+		ft_putchar_fd((c & 0x3F) + 0x80, 1);
 		return (3);
 	}
-	ft_putchar((c >> 18) + 0xF0);
-	ft_putchar(((c >> 12) & 0x3F) + 0x80);
-	ft_putchar(((c >> 6) & 0x3F) + 0x80);
-	ft_putchar((c & 0x3F) + 0x80);
+	ft_putchar_fd((c >> 18) + 0xF0, 1);
+	ft_putchar_fd(((c >> 12) & 0x3F) + 0x80, 1);
+	ft_putchar_fd(((c >> 6) & 0x3F) + 0x80, 1);
+	ft_putchar_fd((c & 0x3F) + 0x80, 1);
 	return (4);
 }
 

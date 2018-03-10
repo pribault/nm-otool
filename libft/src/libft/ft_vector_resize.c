@@ -6,23 +6,33 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/01 01:15:55 by pribault          #+#    #+#             */
-/*   Updated: 2017/10/18 19:54:19 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/03 12:01:43 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_vector_resize(t_vector *vector, size_t new_size)
+static void	*vector_realloc(void *ptr, size_t size, size_t new_size)
+{
+	void	*new_ptr;
+
+	if (!(new_ptr = mmap(NULL, new_size, PROT_READ | PROT_WRITE,
+		MAP_PRIVATE | MAP_ANON, -1, 0)))
+		return (NULL);
+	ft_memcpy(new_ptr, ptr, size);
+	munmap(ptr, size);
+	return (new_ptr);
+}
+
+void		ft_vector_resize(t_vector *vector, size_t new_size)
 {
 	size_t	mem;
 
-	if (!vector)
-		return ;
 	if (new_size * vector->type > vector->size)
 	{
 		mem = VECTOR_SIZE * ((new_size * vector->type - 1) /
 		VECTOR_SIZE) + VECTOR_SIZE;
-		if (!(vector->ptr = realloc(vector->ptr, mem)))
+		if (!(vector->ptr = vector_realloc(vector->ptr, vector->size, mem)))
 			return ;
 		vector->size = mem;
 	}

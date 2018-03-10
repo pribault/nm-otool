@@ -6,32 +6,36 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/07 14:34:59 by pribault          #+#    #+#             */
-/*   Updated: 2017/10/01 15:35:23 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/10 13:47:14 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PROTOTYPES_H
 # define PROTOTYPES_H
 
-# include "ft_printf.h"
+# include "libft.h"
+# include "malloc.h"
 # include "structs.h"
 # include <sys/mman.h>
-# include <pthread.h>
 
-t_zone			*alloc_zone(size_t size);
-void			*alloc_in_zone(t_zone *zone, size_t size);
-void			*alloc_large(size_t size);
+void	malloc_error(int error, void *param);
+void	*unlock_and_return(void *ptr);
 
-char			search_and_free(t_alloc **head, void *ptr, char state);
+void	*allocate_large(t_zone *zone, size_t size);
 
-char			is_in_alloc(t_alloc *alloc, void *ptr);
+t_zone	*create_zone(size_t size, char *name);
+void	*allocate_in_zone(t_zone *zone, size_t size);
 
-size_t			show_zone(t_zone *zone);
-size_t			show_allocs(t_alloc *alloc);
+void	*get_in_zone(t_zone *zone, void *ptr, size_t size);
+void	*get_allocation(t_zone *zone, size_t size);
 
-void			sort_zones(t_zone **head);
-void			sort_allocs(t_alloc **head);
+void	claim_allocation(t_alloc *alloc, size_t size);
 
-void			*malloc_error(int error, void *param);
+void	*realloc_in_zones(t_zone *zone, void *ptr, size_t size);
+void	*reallocf_in_zones(t_zone *zone, void *ptr, size_t size);
+void	*realloc_in_zone(t_zone *zone, t_alloc *prev, t_alloc *alloc,
+		size_t size);
+t_bool	free_in_zones(t_zone *zone, void *ptr);
+t_bool	free_in_zone(t_zone *zone, void *ptr);
 
 #endif

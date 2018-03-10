@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/24 10:27:06 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/24 10:49:39 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/10 18:54:03 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_ret	read_segment(t_nm *nm, void *ptr)
 		if (!(section = get_section(nm, ptr + sizeof(struct segment_command) +
 			i * sizeof(struct section))))
 			return (0);
-		ft_vector_add(nm->sect_32, section);
+		ft_vector_add(&nm->sect_32, section);
 	}
 	return (1);
 }
@@ -46,7 +46,7 @@ t_ret	read_segment_64(t_nm *nm, void *ptr)
 			sizeof(struct segment_command_64) + i *
 			sizeof(struct section_64))))
 			return (0);
-		ft_vector_add(nm->sect_64, section);
+		ft_vector_add(&nm->sect_64, section);
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/07 13:04:57 by pribault          #+#    #+#             */
-/*   Updated: 2017/10/18 20:35:04 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/10 13:20:53 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,40 +15,39 @@
 
 # include <pthread.h>
 
-# define TINY		128
-# define SMALL		1024
-# define ALLOCS		256
+# define TINY				64
+# define SMALL				128
+# define ALLOCS				128
 
-# define LINE_FEED	16
+# define LINE_FEED			16
+
+# define TYPE_FREE			0
+# define TYPE_ALLOC			1
+
+# define COLORS				16
+
+# define DEFAULT_PADDING	8
 
 typedef struct		s_alloc
 {
-	void			*ptr;
 	size_t			size;
-	struct s_alloc	*next;
+	uint8_t			type;
 }					t_alloc;
 
 typedef struct		s_zone
 {
-	void			*ptr;
 	size_t			size;
-	t_alloc			*allocs;
 	struct s_zone	*next;
+	char			*name;
 }					t_zone;
-
-/*
-**	mutex[0]: malloc
-**	mutex[1]: free
-**	mutex[2]: calloc
-**	mutex[3]: realloc
-*/
 
 typedef struct		s_env
 {
 	t_zone			*tiny;
 	t_zone			*small;
-	t_alloc			*large;
-	pthread_mutex_t	mutex[4];
+	t_zone			*large;
+	pthread_mutex_t	mutex;
+	char			*colors[COLORS];
 }					t_env;
 
 extern t_env		g_env;

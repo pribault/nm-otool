@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 21:50:45 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/25 16:21:55 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/10 20:22:56 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		read_symtab(t_nm *nm, void *ptr)
 			i * sizeof(struct nlist))))
 			return (0);
 		if (get_str(nm, nm->ptr + symtab->stroff + nlist->n_un.n_strx))
-			ft_vector_add(nm->syms_32, nlist);
+			ft_vector_add(&nm->syms_32, nlist);
 		else
 			return (0);
 	}
@@ -57,7 +57,7 @@ int		read_symtab_64(t_nm *nm, void *ptr)
 			i * sizeof(struct nlist_64))))
 			return (0);
 		if (get_str(nm, nm->ptr + symtab->stroff + nlist->n_un.n_strx))
-			ft_vector_add(nm->syms_64, nlist);
+			ft_vector_add(&nm->syms_64, nlist);
 		else
 			return (0);
 	}
@@ -68,27 +68,25 @@ t_ret	read_mach_32(t_nm *nm, void *ptr, char *name, t_file_type type)
 {
 	struct load_command	*cmd;
 	struct mach_header	*header;
-	uint64_t			size;
-	uint32_t			i;
+	uint64_t			i[2];
 
 	if (!(header = get_mach_header(nm, ptr)))
 		return (RETURN_FILE_CORRUPTED);
 	if (type == TYPE_FAT)
 		ft_printf("\n%s (for architecture %s):\n", name,
 		get_cpu_type(header->cputype));
-	size = 0;
-	i = (uint32_t)-1;
+	i[0] = 0;
+	i[1] = (uint64_t)-1;
 	nm->stroff = 0;
-	while (++i < header->ncmds)
-	{
+	while (++i[1] < header->ncmds)
 		if (!(cmd = get_load_command(nm, ptr + sizeof(struct mach_header) +
-			size)))
+			i[0])))
 			return (RETURN_FILE_CORRUPTED);
-		if ((cmd->cmd == LC_SYMTAB && !read_symtab(nm, cmd)) ||
+		else if ((cmd->cmd == LC_SYMTAB && !read_symtab(nm, cmd)) ||
 			(cmd->cmd == LC_SEGMENT && !read_segment(nm, cmd)))
 			return (RETURN_FILE_CORRUPTED);
-		size += cmd->cmdsize;
-	}
+		else
+			i[0] += cmd->cmdsize;
 	sort_symtab_32(nm);
 	print_symtab_32(nm);
 	debug_full(nm);
@@ -99,27 +97,25 @@ t_ret	read_mach_64(t_nm *nm, void *ptr, char *name, t_file_type type)
 {
 	struct load_command		*cmd;
 	struct mach_header_64	*header;
-	uint64_t				size;
-	uint32_t				i;
+	uint64_t				i[2];
 
 	if (!(header = get_mach_header_64(nm, ptr)))
 		return (RETURN_FILE_CORRUPTED);
 	if (type == TYPE_FAT)
 		ft_printf("\n%s (for architecture %s):\n", name,
 		get_cpu_type(header->cputype));
-	size = 0;
-	i = (uint32_t)-1;
+	i[0] = 0;
+	i[1] = (uint64_t)-1;
 	nm->stroff = 0;
-	while (++i < header->ncmds)
-	{
+	while (++i[1] < header->ncmds)
 		if (!(cmd = get_load_command(nm, ptr + sizeof(struct mach_header_64) +
-			size)))
+			i[0])))
 			return (RETURN_FILE_CORRUPTED);
-		if ((cmd->cmd == LC_SYMTAB && !read_symtab_64(nm, cmd)) ||
+		else if ((cmd->cmd == LC_SYMTAB && !read_symtab_64(nm, cmd)) ||
 			(cmd->cmd == LC_SEGMENT_64 && !read_segment_64(nm, cmd)))
 			return (RETURN_FILE_CORRUPTED);
-		size += cmd->cmdsize;
-	}
+		else
+			i[0] += cmd->cmdsize;
 	sort_symtab_64(nm);
 	print_symtab_64(nm);
 	debug_full(nm);
@@ -130,14 +126,14 @@ t_ret	read_mach(t_nm *nm, void *ptr, char *name, t_file_type type)
 {
 	uint32_t	*magic;
 
-	if (type == TYPE_MACH && nm->files->n > 1)
+	if (type == TYPE_MACH && nm->files.n > 1)
 		ft_printf("\n%s:\n", name);
 	if (!(magic = get_prot(nm, ptr, sizeof(uint32_t))))
 		return (RETURN_UNKNOWN_FILE_FORMAT);
-	ft_vector_resize(nm->syms_32, 0);
-	ft_vector_resize(nm->sect_32, 0);
-	ft_vector_resize(nm->syms_64, 0);
-	ft_vector_resize(nm->sect_64, 0);
+	ft_vector_resize(&nm->syms_32, 0);
+	ft_vector_resize(&nm->sect_32, 0);
+	ft_vector_resize(&nm->syms_64, 0);
+	ft_vector_resize(&nm->sect_64, 0);
 	if (*magic == MH_MAGIC || *magic == MH_CIGAM)
 		return (read_mach_32(nm, ptr, name, type));
 	else if (*magic == MH_MAGIC_64 || *magic == MH_CIGAM_64)

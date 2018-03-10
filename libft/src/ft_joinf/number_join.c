@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 14:06:03 by pribault          #+#    #+#             */
-/*   Updated: 2017/08/19 14:39:06 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/10 14:55:58 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,12 @@ void			print_number(va_list va, char *new, size_t *j, char *base)
 	int				b;
 	char			c;
 
+	ft_printf("va_arg?\n");
 	nbr = va_arg(va, int);
+	ft_printf("???\n");
 	pow = 1;
 	b = ft_strlen(base);
+	ft_printf("b=%d\n", b);
 	if (nbr < 0)
 	{
 		new[(*j)++] = '-';

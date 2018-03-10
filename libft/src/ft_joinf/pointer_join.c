@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   flags.c                                            :+:      :+:    :+:   */
+/*   pointer_join.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/03 21:16:21 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/10 19:35:43 by pribault         ###   ########.fr       */
+/*   Created: 2018/03/09 08:46:45 by pribault          #+#    #+#             */
+/*   Updated: 2018/03/10 14:59:47 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_nm.h"
+#include "ft_joinf.h"
 
-void	get_default(char *file, t_nm *nm)
+void			print_pointer(va_list va, char *new, size_t *j)
 {
-	ft_vector_add(&nm->files, &file);
+	new[(*j)++] = '0';
+	new[(*j)++] = 'x';
+	print_unsigned_base_join(va, new, j, "0123456789abcdef");
 }
 
-void	print_usage(void)
+size_t			get_pointer_len(va_list va, char *base)
 {
-	ft_printf("\e[2m./ft_nm\e[0m <file>\e[0m\n");
-	ft_printf("  \e[1mavailable options:\e[0m\n");
-	ft_printf("    \e[2m--help\e[0m or \e[2m-h\e[0m: print usage\n");
-	ft_printf("    \e[2m--debug\e[0m or \e[2m-d\e[0m: enable debug mode\n");
-	exit(1);
-}
+	int		nbr;
 
-void	set_debug(t_nm *nm)
-{
-	nm->opt |= DEBUG;
+	nbr = va_arg(va, int);
+	return (ft_nbrlen_base(nbr, ft_strlen(base)) + 2);
 }

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:41:36 by pribault          #+#    #+#             */
-/*   Updated: 2018/02/25 15:59:55 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/10 21:18:46 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,13 @@ typedef enum	e_file_type
 
 typedef struct	s_nm
 {
-	t_vector	*files;
+	t_vector	files;
 	void		*ptr;
 	size_t		size;
-	t_vector	*syms_32;
-	t_vector	*syms_64;
-	t_vector	*sect_32;
-	t_vector	*sect_64;
+	t_vector	syms_32;
+	t_vector	syms_64;
+	t_vector	sect_32;
+	t_vector	sect_64;
 	uint32_t	stroff;
 	uint8_t		opt;
 	int			out;
@@ -186,5 +186,13 @@ void			print_output_to(t_nm *nm, int fd);
 */
 
 void			debug_full(t_nm *nm);
+
+/*
+**	others
+*/
+
+char			*get_name(char *file);
+
+extern t_long_flag	g_long_flags[];
 
 #endif
