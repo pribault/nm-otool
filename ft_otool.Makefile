@@ -1,21 +1,27 @@
-NAME = ft_otool
-CC = clang
-FLAGS = -Wall -Wextra -Werror -Ofast -O3
-INC = include
-INCLUDE = ft_otool.h
-INCLUDES = $(INCLUDE:%.h=$(INC)/%.h)
-SRC = src/ft_otool
-OBJ = src/ft_otool_obj
-SRCS =	ft_otool.c
-OBJS = $(SRCS:%.c=$(OBJ)/%.o)
-LIBFT = libft
-INCLUDE_LIBS = -I $(LIBFT)/include
-COMPILE_LIBS = -L $(LIBFT) -lft
-N = 0
-MAX = $(words $(OBJS))
-JOBS = 4
+NAME =	ft_otool
+CC =	clang
+FLAGS =	-Wall -Wextra -Ofast -O3
+INC =	include
+INCLUDE =	ft_otool.h
+INCLUDES =	$(INCLUDE:%.h=$(INC)/%.h)
+SRC =	src/ft_otool
+OBJ =	src/ft_otool_obj
+SRCS =	ft_otool.c flags.c get.c\
+		get_2.c get_3.c get_4.c\
+		output.c endian.c fat.c\
+		archive.c archive_2.c mach.c\
+		segment.c segment_2.c
+OBJS =	$(SRCS:%.c=$(OBJ)/%.o)
+LIBFT =	libft
+INCLUDE_LIBS =	-I $(LIBFT)/include
+COMPILE_LIBS =	-L $(LIBFT) -lft
+N =		0
+MAX =	$(words $(OBJS))
+JOBS =	4
 
 .PHONY: all clean fclean re export $(NAME)
+
+.SILENT:
 
 all: $(NAME)
 
@@ -31,7 +37,7 @@ $(OBJ)/%.o: $(SRC)/%.c $(INCLUDES) $(LIBFT)/libft.a | $(OBJ)
 	@printf "\033[0m\033[38;5;124m[\033[38;5;7m%3u%% \033[38;5;124m$(NAME)] \033[38;5;207m🍇  $@ done\033[0m\n" $(PERCENT)
 
 $(NAME): $(OBJS)
-	@if [ ! $N = 0 ]; then $(CC) $(FLAGS) -o $(NAME) $(OBJS) $(COMPILE_LIBS); echo "\033[0m\033[38;5;124m[∎∎∎∎ $(NAME)] \033[38;5;125m🐼  $(NAME) done\033[0m"; else echo "\033[0m\033[38;5;124m[∎∎∎∎ $(NAME)] \033[38;5;125m🦋  nothing to be done done\033[0m"; fi
+	@if [ ! $N = 0 ]; then $(CC) $(FLAGS) -o $(NAME) $(OBJS) $(COMPILE_LIBS); echo "\033[0m\033[38;5;124m[∎∎∎∎ $(NAME)] \033[38;5;125m🐼  $(NAME) done\033[0m"; else echo "\033[0m\033[38;5;124m[∎∎∎∎ $(NAME)] \033[38;5;125m🦋  nothing to be done\033[0m"; fi
 
 clean:
 	@rm -rf $(OBJ)

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/10 11:40:44 by pribault          #+#    #+#             */
-/*   Updated: 2017/01/13 16:47:40 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/11 18:38:25 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	print_unsigned_base(unsigned long long int n, int *l, char *bs, int b)
 		print_unsigned_base(n % b, l, bs, b);
 	}
 	else
-		(*l) += print_wchar(bs[n]);
+		(*l) += print_char(bs[n]);
 }
 
 size_t	unsigned_len(unsigned long long int nbr, unsigned int base)

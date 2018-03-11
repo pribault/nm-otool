@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/07 14:34:59 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/10 13:47:14 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/11 21:46:56 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 void	malloc_error(int error, void *param);
 void	*unlock_and_return(void *ptr);
+void	*lock_and_return(void *ptr);
 
 void	*allocate_large(t_zone *zone, size_t size);
 

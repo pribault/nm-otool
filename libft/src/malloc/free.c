@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 23:30:57 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/10 15:18:29 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/11 20:05:05 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,24 @@ t_bool	free_in_zone(t_zone *zone, void *ptr)
 
 t_bool	free_in_zones(t_zone *zone, void *ptr)
 {
+	t_zone	*prev;
+
+	prev = NULL;
 	while (zone)
 	{
 		if (ptr >= (void*)&zone[1] && ptr < (void*)&zone[1] + zone->size)
-			return (free_in_zone(zone, ptr));
+		{
+			if (free_in_zone(zone, ptr) != FT_TRUE)
+				return (FT_FALSE);
+			if (zone->size == ((t_alloc*)&zone[1])->size + sizeof(t_alloc) &&
+				prev)
+			{
+				prev->next = zone->next;
+				munmap(zone, sizeof(t_zone) + zone->size);
+			}
+			return (FT_TRUE);
+		}
+		prev = zone;
 		zone = zone->next;
 	}
 	return (FT_FALSE);

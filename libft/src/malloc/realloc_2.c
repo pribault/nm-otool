@@ -6,11 +6,17 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 11:07:44 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/10 14:19:27 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/11 21:47:00 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "prototypes.h"
+
+void	*lock_and_return(void *ptr)
+{
+	pthread_mutex_lock(&g_env.mutex);
+	return (ptr);
+}
 
 void	*realloc_in_zones(t_zone *zone, void *ptr, size_t size)
 {

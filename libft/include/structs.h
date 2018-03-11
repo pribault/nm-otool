@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/07 13:04:57 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/10 13:20:53 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/11 21:04:43 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <pthread.h>
 
 # define TINY				64
-# define SMALL				128
+# define SMALL				512
 # define ALLOCS				128
 
 # define LINE_FEED			16
@@ -27,6 +27,8 @@
 # define COLORS				16
 
 # define DEFAULT_PADDING	8
+
+# define REALLOC_MULTIPLIER	2
 
 typedef struct		s_alloc
 {

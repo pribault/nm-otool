@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/10 10:10:58 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/10 13:24:36 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/11 21:47:07 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,12 @@ void		*realloc_in_zone(t_zone *zone, t_alloc *prev, t_alloc *alloc,
 		size <= 2 * sizeof(t_alloc) + prev->size + alloc->size + next->size)
 		return (realloc_4(prev, next, alloc, size));
 	pthread_mutex_unlock(&g_env.mutex);
-	ptr = malloc(size);
+	if (!(ptr = malloc(size * REALLOC_MULTIPLIER)))
+		return (lock_and_return(NULL));
 	pthread_mutex_lock(&g_env.mutex);
-	ft_memcpy(ptr, &alloc[1], (alloc->size < size) ? alloc->size : size);
-	free_in_zone(zone, &alloc[1]);
+	ft_memcpy(ptr, &alloc[1], alloc->size);
+	pthread_mutex_unlock(&g_env.mutex);
+	free(&alloc[1]);
+	pthread_mutex_lock(&g_env.mutex);
 	return (ptr);
 }

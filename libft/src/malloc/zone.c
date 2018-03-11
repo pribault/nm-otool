@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/03 09:37:43 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/10 10:11:25 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/11 19:33:27 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ t_zone	*create_zone(size_t size, char *name)
 	t_alloc	alloc;
 	t_zone	*zone;
 
-	size = ((size + sizeof(t_zone) - 1) / getpagesize()) * getpagesize() +
-	getpagesize();
+	size = ((size + sizeof(t_zone) + sizeof(t_alloc) - 1) / getpagesize()) *
+	getpagesize() + getpagesize();
 	if (!(zone = mmap(NULL, size, PROT_READ | PROT_WRITE,
 		MAP_PRIVATE | MAP_ANON, -1, 0)))
 	{
@@ -28,7 +28,7 @@ t_zone	*create_zone(size_t size, char *name)
 	zone->size = size - sizeof(t_zone);
 	zone->next = NULL;
 	zone->name = name;
-	alloc.size = zone->size;
+	alloc.size = zone->size - sizeof(t_alloc);
 	alloc.type = TYPE_FREE;
 	ft_memcpy(&zone[1], &alloc, sizeof(t_alloc));
 	return (zone);
