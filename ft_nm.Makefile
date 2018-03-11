@@ -39,7 +39,7 @@ $(NAME): $(OBJS)
 	@if [ ! $N = 0 ]; then $(CC) $(FLAGS) -o $(NAME) $(OBJS) $(COMPILE_LIBS); echo "\033[0m\033[38;5;124m[∎∎∎∎ $(NAME)] \033[38;5;125m🐼  $(NAME) done\033[0m"; else echo "\033[0m\033[38;5;124m[∎∎∎∎ $(NAME)] \033[38;5;125m🦋  nothing to be done done\033[0m"; fi
 
 clean:
-	@rm -f $(OBJS)
+	@rm -rf $(OBJ)
 	@echo "\033[0m\033[38;5;124m[∎∎∎∎ $(NAME)] \033[0m\033[38;5;45mobject files removed\033[0m"
 
 fclean: clean
