@@ -50,6 +50,7 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
+	@rm -f ft_nm_log nm_log nm_diff
 	@echo "\033[0m\033[38;5;124m[∎∎∎∎ $(NAME)] \033[0m\033[38;5;87m$(NAME) removed\033[0m"
 
 norme:
