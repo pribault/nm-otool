@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:42:40 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/11 21:44:54 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/24 16:11:56 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 
 # define STR_MAX		128
 
-# define SAVE_LINE		128
+# define SAVE_LINE		8192
 
 /*
 *************
@@ -56,7 +56,8 @@ typedef enum	e_otool_error
 	ERROR_UNKNOWN_FILE_FORMAT,
 	ERROR_FILE_CORRUPTED,
 	ERROR_ON_FD,
-	ERROR_NM_MAX
+	ERROR_EMPTY_FILE,
+	ERROR_OTOOL_MAX
 }				t_otool_error;
 
 typedef enum	e_ret
@@ -84,6 +85,8 @@ typedef struct	s_otool
 	t_vector	files;
 	void		*ptr;
 	size_t		size;
+	t_vector	segment_32;
+	t_vector	segment_64;
 	uint8_t		opt;
 	int			out;
 	int			null;

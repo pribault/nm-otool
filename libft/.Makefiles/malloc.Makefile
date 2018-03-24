@@ -34,7 +34,7 @@ $(OBJ_DIR)/$(DIR)/%.o: $(SRC_DIR)/$(DIR)/%.c $(INCLUDE) | $(OBJ_DIR)/$(DIR)
 	@printf "\033[0m\033[38;5;166m[$(DIR) \033[38;5;7m%3u%%\033[38;5;166m] \033[0m🌶  \033[38;5;226m$(@:$(OBJ_DIR)/$(DIR)/%.o=%.o) done\033[0m\n" $(PERCENT)
 
 $(NAME): $(OBJ)
-	@if [ ! $(N) = 0 ]; then ar rc $(NAME) $(OBJ); ranlib $(NAME); echo "\033[0m\033[38;5;166m[$(DIR) ∎∎∎∎] \033[0m🐹  \033[38;5;214m$@ done\033[0m"; fi
+	@if [ ! $(N) = 0 ]; then ar rc $(NAME) $(OBJ); ranlib $(NAME); echo "\033[0m\033[38;5;166m[$(DIR) ∎∎∎∎] \033[0m🐹  \033[38;5;214m$@ done\033[0m"; else echo "\033[0m\033[38;5;166m[$(DIR) ∎∎∎∎] \033[0m🐹  \033[38;5;214mnothing to be done\033[0m"; fi
 
 clean:
 	@rm -rf $(OBJ_DIR)/$(DIR)

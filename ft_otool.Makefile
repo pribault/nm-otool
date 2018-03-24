@@ -18,12 +18,14 @@ COMPILE_LIBS =	-L $(LIBFT) -lft
 N =		0
 MAX =	$(words $(OBJS))
 JOBS =	4
+MAKE =	false
 
-.PHONY: all clean fclean re export $(NAME)
+.PHONY: all clean fclean re export
 
 .SILENT:
 
 all: $(NAME)
+	@if [ $(MAKE) = false ]; then echo "\033[0m\033[38;5;124m[∎∎∎∎ $(NAME)] \033[38;5;125m🦋  nothing to be done\033[0m"; fi
 
 $(OBJ):
 	@mkdir $@
@@ -37,7 +39,9 @@ $(OBJ)/%.o: $(SRC)/%.c $(INCLUDES) $(LIBFT)/libft.a | $(OBJ)
 	@printf "\033[0m\033[38;5;124m[\033[38;5;7m%3u%% \033[38;5;124m$(NAME)] \033[38;5;207m🍇  $@ done\033[0m\n" $(PERCENT)
 
 $(NAME): $(OBJS)
-	@if [ ! $N = 0 ]; then $(CC) $(FLAGS) -o $(NAME) $(OBJS) $(COMPILE_LIBS); echo "\033[0m\033[38;5;124m[∎∎∎∎ $(NAME)] \033[38;5;125m🐼  $(NAME) done\033[0m"; else echo "\033[0m\033[38;5;124m[∎∎∎∎ $(NAME)] \033[38;5;125m🦋  nothing to be done\033[0m"; fi
+	@$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(COMPILE_LIBS)
+	@echo "\033[0m\033[38;5;124m[∎∎∎∎ $(NAME)] \033[38;5;125m🐼  $(NAME) done\033[0m"
+	@$(eval MAKE=true)
 
 clean:
 	@rm -rf $(OBJ)

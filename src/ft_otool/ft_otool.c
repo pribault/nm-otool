@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:42:49 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/11 19:51:06 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/24 16:13:00 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_error		g_errors[] =
 	{ERROR_UNKNOWN_FILE_FORMAT, "'%s': unknown file format", 0},
 	{ERROR_FILE_CORRUPTED, "'%s': file corrupted", 0},
 	{ERROR_ON_FD, "error setting file descriptors", ERROR_EXIT},
+	{ERROR_EMPTY_FILE, "%s empty", 0},
 	{0, NULL, 0}
 };
 
@@ -74,6 +75,8 @@ void	get_file(char *file, t_otool *otool)
 		close(fd);
 		return (ft_error(2, ERROR_FSTAT, file));
 	}
+	if (!buff.st_size)
+		return (ft_error(2, ERROR_EMPTY_FILE, file));
 	otool->size = buff.st_size;
 	if (!(otool->ptr = mmap(NULL, buff.st_size, PROT_READ | PROT_WRITE,
 		MAP_PRIVATE | MAP_FILE, fd, 0)))
@@ -97,6 +100,8 @@ void	init_otool(t_otool *otool, int argc, char **argv)
 		pipe(otool->pipe) == -1 || close(1) == -1 ||
 		dup2(otool->pipe[1], 1) == -1)
 		ft_error(2, ERROR_ON_FD, NULL);
+	ft_vector_init(&otool->segment_32, sizeof(struct segment_command*));
+	ft_vector_init(&otool->segment_64, sizeof(struct segment_command_64*));
 }
 
 int		main(int argc, char **argv)

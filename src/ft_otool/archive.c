@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 16:32:36 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/11 16:33:53 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/24 15:37:36 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,13 @@ static t_ret	read_file_in_ar(char *lib, char *file, t_otool *otool)
 {
 	t_ret		ret;
 
-	if (!file || !get_str(otool, file))
-		return (RETURN_FILE_CORRUPTED);
 	if (!strcmp(file, SYMDEF_SORTED) || !strcmp(file, SYMDEF))
 		return (RETURN_SUCCESS);
-	ft_printf("\n%s(%s):\n", lib, file);
+	ft_printf("%s(%s):\n", lib, file);
 	if ((ret = read_fat(otool, otool->ptr, file)) !=
 		RETURN_UNKNOWN_FILE_FORMAT)
 		return (ret);
-	if ((ret = read_mach(otool, otool->ptr, file, TYPE_MACH)) !=
+	if ((ret = read_mach(otool, otool->ptr, file, TYPE_AR)) !=
 		RETURN_UNKNOWN_FILE_FORMAT)
 		return (ret);
 	if ((ret = read_ar(otool, otool->ptr, file)) !=
@@ -44,6 +42,8 @@ t_ret			restore_otool(t_otool *otool, void *ptr, size_t size,
 static t_ret	read_ar_2(t_otool *otool, struct ar_hdr *header, char *name,
 				uint64_t *save)
 {
+	if (!get_str(otool, (void*)header + sizeof(struct ar_hdr)))
+		return (RETURN_FILE_CORRUPTED);
 	otool->ptr = (void*)header + sizeof(struct ar_hdr) +
 	ft_atou((void*)(&header->ar_name) + 3);
 	otool->size = save[0] + save[1] - (uint64_t)otool->ptr;
@@ -79,10 +79,10 @@ t_ret			read_ar(t_otool *otool, void *ptr, char *name)
 	if (!(ar = get_prot(otool, ptr, SARMAG)) ||
 		strncmp(ar, ARMAG, SARMAG))
 		return (RETURN_UNKNOWN_FILE_FORMAT);
-	ptr += SARMAG;
 	save[0] = (uint64_t)otool->ptr;
 	save[1] = otool->size;
-	while ((header = get_prot(otool, ptr, sizeof(struct ar_hdr))))
+	ft_printf("Archive : %s\n", name);
+	while ((header = get_prot(otool, ptr + SARMAG, sizeof(struct ar_hdr))))
 	{
 		if (strncmp((char*)&header->ar_fmag, ARFMAG, 2) ||
 			!get_prot(otool, (void*)header + sizeof(struct ar_hdr),

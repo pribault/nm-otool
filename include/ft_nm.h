@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:41:36 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/11 16:10:11 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/24 16:13:29 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef enum	e_nm_error
 	ERROR_UNKNOWN_FILE_FORMAT,
 	ERROR_FILE_CORRUPTED,
 	ERROR_ON_FD,
+	ERROR_EMPTY_FILE,
 	ERROR_NM_MAX
 }				t_nm_error;
 
