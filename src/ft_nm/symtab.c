@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/04 14:30:21 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 19:14:52 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/24 19:41:54 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,16 @@ void	print_symtab_32(t_nm *nm)
 	i = nm->syms_32.n;
 	while (--i != (size_t)-1 && (nlist = ft_vector_get(&nm->syms_32, i)))
 	{
-		if ((c = get_symbol_value_32(nm, nlist)) == 'U')
-			ft_printf("         %c %s\n", c,
-			nm->ptr + nm->stroff + nlist->n_un.n_strx);
-		else if (c != '?')
+		c = get_symbol_value_32(nm, nlist);
+		if (c == 'U')
+		{
+			if (nm->opt & ONLY_UNDEFINED)
+				ft_printf("%s\n", nm->ptr + nm->stroff + nlist->n_un.n_strx);
+			else if (!(nm->opt & NO_UNDEFINED))
+				ft_printf("         %c %s\n", c,
+				nm->ptr + nm->stroff + nlist->n_un.n_strx);
+		}
+		else if (c != '?' && !(nm->opt & ONLY_UNDEFINED))
 			ft_printf("%.8lx %c %s\n", nlist->n_value, c,
 			nm->ptr + nm->stroff + nlist->n_un.n_strx);
 	}
@@ -75,10 +81,16 @@ void	print_symtab_64(t_nm *nm)
 	i = nm->syms_64.n;
 	while (--i != (size_t)-1 && (nlist = ft_vector_get(&nm->syms_64, i)))
 	{
-		if ((c = get_symbol_value_64(nm, nlist)) == 'U')
-			ft_printf("                 %c %s\n", c,
-			nm->ptr + nm->stroff + nlist->n_un.n_strx);
-		else if (c != '?')
+		c = get_symbol_value_64(nm, nlist);
+		if (c == 'U')
+		{
+			if (nm->opt & ONLY_UNDEFINED)
+				ft_printf("%s\n", nm->ptr + nm->stroff + nlist->n_un.n_strx);
+			else if (!(nm->opt & NO_UNDEFINED))
+				ft_printf("                 %c %s\n", c,
+				nm->ptr + nm->stroff + nlist->n_un.n_strx);
+		}
+		else if (c != '?' && !(nm->opt & ONLY_UNDEFINED))
 			ft_printf("%.16lx %c %s\n", nlist->n_value, c,
 			nm->ptr + nm->stroff + nlist->n_un.n_strx);
 	}

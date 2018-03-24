@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:41:36 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 19:13:02 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/24 19:24:41 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@
 # define NO_SORT		BYTE(3)
 # define REVERSE		BYTE(4)
 # define NUMERIC_SORT	BYTE(5)
+# define ONLY_UNDEFINED	BYTE(6)
+# define NO_UNDEFINED	BYTE(7)
 # define ENDIAN(x)		(x & MACH_ENDIAN)
 
 # define STR_MAX		128
@@ -93,7 +95,7 @@ typedef struct	s_nm
 	t_vector	sect_32;
 	t_vector	sect_64;
 	uint32_t	stroff;
-	uint8_t		opt;
+	uint32_t	opt;
 	int			out;
 	int			null;
 	int			pipe[2];
@@ -141,6 +143,8 @@ void			set_debug(t_nm *nm);
 void			set_no_sort(t_nm *nm);
 void			set_reverse(t_nm *nm);
 void			set_numeric_sort(t_nm *nm);
+void			set_only_undefined(t_nm *nm);
+void			set_no_undefined(t_nm *nm);
 
 /*
 **	memory functions

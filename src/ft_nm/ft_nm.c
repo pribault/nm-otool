@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:39:41 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 19:08:05 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/24 19:23:38 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static t_short_flag	g_short_flags[] =
 	{'p', (void*)&set_no_sort},
 	{'r', (void*)&set_reverse},
 	{'n', (void*)&set_numeric_sort},
+	{'u', (void*)set_only_undefined},
+	{'U', (void*)set_no_undefined},
 	{0, NULL}
 };
 

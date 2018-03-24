@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 21:16:21 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 19:09:10 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/24 19:28:26 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	print_usage(void)
 	ft_printf("    \e[2m--nosort\e[0m or \e[2m-p\e[0m: don't sort\n");
 	ft_printf("    \e[2m--reverse\e[0m or \e[2m-r\e[0m: reverse\n");
 	ft_printf("    \e[2m--numeric\e[0m or \e[2m-n\e[0m: sort numerically\n");
+	ft_printf("    \e[2m-U\e[0m: do not print undefined symbols\n");
+	ft_printf("    \e[2m-u\e[0m: print only undefined symbols\n");
 	exit(1);
 }
 
