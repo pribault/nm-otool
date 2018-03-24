@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 21:16:21 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/10 19:35:43 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/24 18:24:57 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,22 @@ void	print_usage(void)
 	ft_printf("  \e[1mavailable options:\e[0m\n");
 	ft_printf("    \e[2m--help\e[0m or \e[2m-h\e[0m: print usage\n");
 	ft_printf("    \e[2m--debug\e[0m or \e[2m-d\e[0m: enable debug mode\n");
+	ft_printf("    \e[2m--nosort\e[0m or \e[2m-p\e[0m: don't sort\n");
+	ft_printf("    \e[2m--reverse\e[0m or \e[2m-r\e[0m: reverse\n");
 	exit(1);
 }
 
 void	set_debug(t_nm *nm)
 {
 	nm->opt |= DEBUG;
+}
+
+void	set_no_sort(t_nm *nm)
+{
+	nm->opt |= NO_SORT;
+}
+
+void	set_reverse(t_nm *nm)
+{
+	nm->opt |= REVERSE;
 }

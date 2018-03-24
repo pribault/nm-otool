@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:39:41 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 16:14:01 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/24 18:23:10 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static t_short_flag	g_short_flags[] =
 {
 	{'h', (void*)&print_usage},
 	{'d', (void*)&set_debug},
+	{'p', (void*)&set_no_sort},
+	{'r', (void*)&set_reverse},
 	{0, NULL}
 };
 
@@ -23,6 +25,8 @@ t_long_flag	g_long_flags[] =
 {
 	{"help", 0, {0}, (void*)&print_usage},
 	{"debug", 0, {0}, (void*)&set_debug},
+	{"nosort", 0, {0}, (void*)set_no_sort},
+	{"reverse", 0, {0}, (void*)&set_reverse},
 	{NULL, 0, {0}, NULL}
 };
 

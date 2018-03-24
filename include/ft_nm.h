@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:41:36 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 16:13:29 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/24 18:49:07 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@
 
 # define MACH_ENDIAN	BYTE(0)
 # define FAT_ENDIAN		BYTE(1)
-# define DEBUG			BYTE(7)
+# define DEBUG			BYTE(2)
+# define NO_SORT		BYTE(3)
+# define REVERSE		BYTE(4)
 # define ENDIAN(x)		(x & MACH_ENDIAN)
 
 # define STR_MAX		128
@@ -106,6 +108,16 @@ void			reset_nm(t_nm *nm);
 
 void			sort_symtab_32(t_nm *nm);
 void			sort_symtab_64(t_nm *nm);
+void			sort_symtab_32_function(t_nm *nm,
+				int (*function)(t_nm *, struct nlist *, struct nlist *));
+void			sort_symtab_64_function(t_nm *nm,
+				int (*function)(t_nm *, struct nlist_64 *, struct nlist_64 *));
+int				sort_symbol_32_alpha(t_nm *nm, struct nlist *a,
+				struct nlist *b);
+int				sort_symbol_64_alpha(t_nm *nm, struct nlist_64 *a,
+				struct nlist_64 *b);
+void			reverse_symtab_32(t_nm *nm);
+void			reverse_symtab_64(t_nm *nm);
 
 void			print_symtab_32(t_nm *nm);
 void			print_symtab_64(t_nm *nm);
@@ -121,6 +133,8 @@ void			print_usage(void);
 void			get_default(char *file, t_nm *nm);
 void			get_file(char *file, t_nm *nm);
 void			set_debug(t_nm *nm);
+void			set_no_sort(t_nm *nm);
+void			set_reverse(t_nm *nm);
 
 /*
 **	memory functions

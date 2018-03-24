@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/04 14:30:21 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/10 20:31:42 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/24 18:57:46 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,13 @@
 
 void	sort_symtab_32(t_nm *nm)
 {
-	t_bool			boolean;
-	struct nlist	*a;
-	struct nlist	*b;
-	size_t			i;
-	int				ret;
-
-	boolean = FT_FALSE;
-	while (!boolean)
+	if (nm->opt & NO_SORT)
+		reverse_symtab_32(nm);
+	else
 	{
-		boolean = FT_TRUE;
-		i = nm->syms_32.n - 1;
-		while (--i != (size_t)-1)
-		{
-			a = ft_vector_get(&nm->syms_32, i);
-			b = ft_vector_get(&nm->syms_32, i + 1);
-			if ((ret = ft_strcmp(nm->ptr + nm->stroff + a->n_un.n_strx,
-				nm->ptr + nm->stroff + b->n_un.n_strx)) < 0 ||
-				(!ret && a->n_value < b->n_value))
-			{
-				boolean = FT_FALSE;
-				ft_swap(a, b, sizeof(struct nlist));
-			}
-		}
+		sort_symtab_32_function(nm, &sort_symbol_32_alpha);
+		if (nm->opt & REVERSE)
+			reverse_symtab_32(nm);
 	}
 }
 
@@ -60,29 +44,13 @@ void	print_symtab_32(t_nm *nm)
 
 void	sort_symtab_64(t_nm *nm)
 {
-	t_bool			boolean;
-	struct nlist_64	*a;
-	struct nlist_64	*b;
-	size_t			i;
-	int				ret;
-
-	boolean = FT_FALSE;
-	while (!boolean)
+	if (nm->opt & NO_SORT)
+		reverse_symtab_64(nm);
+	else
 	{
-		boolean = FT_TRUE;
-		i = nm->syms_64.n - 1;
-		while (--i != (size_t)-1)
-		{
-			a = ft_vector_get(&nm->syms_64, i);
-			b = ft_vector_get(&nm->syms_64, i + 1);
-			if ((ret = ft_strcmp(nm->ptr + nm->stroff + a->n_un.n_strx,
-				nm->ptr + nm->stroff + b->n_un.n_strx)) < 0 ||
-				(!ret && a->n_value < b->n_value))
-			{
-				boolean = FT_FALSE;
-				ft_swap(a, b, sizeof(struct nlist_64));
-			}
-		}
+		sort_symtab_64_function(nm, &sort_symbol_64_alpha);
+		if (nm->opt & REVERSE)
+			reverse_symtab_64(nm);
 	}
 }
 
