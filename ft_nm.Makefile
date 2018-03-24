@@ -11,7 +11,8 @@ SRCS =	ft_nm.c flags.c endian.c\
 		get.c get_2.c get_3.c\
 		get_4.c symtab.c output.c\
 		segment.c debug.c symbol.c\
-		archive_2.c sort.c reverse.c
+		archive_2.c sort.c reverse.c\
+		flags_2.c sort_2.c
 OBJS =	$(SRCS:%.c=$(OBJ)/%.o)
 LIBFT =	libft
 INCLUDE_LIBS =	-I $(LIBFT)/include

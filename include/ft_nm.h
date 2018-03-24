@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:41:36 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 18:49:07 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/24 19:13:02 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define DEBUG			BYTE(2)
 # define NO_SORT		BYTE(3)
 # define REVERSE		BYTE(4)
+# define NUMERIC_SORT	BYTE(5)
 # define ENDIAN(x)		(x & MACH_ENDIAN)
 
 # define STR_MAX		128
@@ -116,6 +117,10 @@ int				sort_symbol_32_alpha(t_nm *nm, struct nlist *a,
 				struct nlist *b);
 int				sort_symbol_64_alpha(t_nm *nm, struct nlist_64 *a,
 				struct nlist_64 *b);
+int				sort_symbol_32_numeric(t_nm *nm, struct nlist *a,
+				struct nlist *b);
+int				sort_symbol_64_numeric(t_nm *nm, struct nlist_64 *a,
+				struct nlist_64 *b);
 void			reverse_symtab_32(t_nm *nm);
 void			reverse_symtab_64(t_nm *nm);
 
@@ -135,6 +140,7 @@ void			get_file(char *file, t_nm *nm);
 void			set_debug(t_nm *nm);
 void			set_no_sort(t_nm *nm);
 void			set_reverse(t_nm *nm);
+void			set_numeric_sort(t_nm *nm);
 
 /*
 **	memory functions

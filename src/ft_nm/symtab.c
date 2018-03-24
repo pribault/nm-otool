@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/04 14:30:21 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 18:57:46 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/24 19:14:52 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@ void	sort_symtab_32(t_nm *nm)
 {
 	if (nm->opt & NO_SORT)
 		reverse_symtab_32(nm);
+	else if (nm->opt & NUMERIC_SORT)
+	{
+		sort_symtab_32_function(nm, &sort_symbol_32_numeric);
+		if (nm->opt & REVERSE)
+			reverse_symtab_32(nm);
+	}
 	else
 	{
 		sort_symtab_32_function(nm, &sort_symbol_32_alpha);
@@ -46,6 +52,12 @@ void	sort_symtab_64(t_nm *nm)
 {
 	if (nm->opt & NO_SORT)
 		reverse_symtab_64(nm);
+	else if (nm->opt & NUMERIC_SORT)
+	{
+		sort_symtab_64_function(nm, &sort_symbol_64_numeric);
+		if (nm->opt & REVERSE)
+			reverse_symtab_64(nm);
+	}
 	else
 	{
 		sort_symtab_64_function(nm, &sort_symbol_64_alpha);
