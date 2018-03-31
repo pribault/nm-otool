@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/03 09:09:58 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/10 15:19:52 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/31 11:53:24 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	dump_zone(void *ptr, size_t size)
 	uint32_t	padding;
 	size_t		i;
 
-	if ((str = getenv("MALLOC_PADDING")))
+	if ((str = ft_getenv(g_env.env, "MALLOC_PADDING")))
 		padding = ft_atou(str);
 	else
 		padding = DEFAULT_PADDING;

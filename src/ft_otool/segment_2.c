@@ -6,13 +6,13 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 21:25:16 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 12:12:16 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/31 19:32:13 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_otool.h"
 
-t_ret	print_text_section_32_endian(t_otool *otool, struct section *section,
+t_ret	print_section_32_endian(t_otool *otool, struct section *section,
 		void *ptr, size_t size)
 {
 	size_t	i;
@@ -38,7 +38,7 @@ t_ret	print_text_section_32_endian(t_otool *otool, struct section *section,
 	return (1);
 }
 
-t_ret	print_text_section_64_endian(t_otool *otool,
+t_ret	print_section_64_endian(t_otool *otool,
 		struct section_64 *section, void *ptr, size_t size)
 {
 	size_t	i;

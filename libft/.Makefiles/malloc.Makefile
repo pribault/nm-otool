@@ -4,7 +4,7 @@ CC = clang
 SRC =	malloc.c show_alloc.c zone.c\
 		get.c allocation.c error.c\
 		free.c realloc.c realloc_2.c\
-		malloc_2.c
+		malloc_2.c log.c
 DIR = malloc
 SRC_DIR = src
 OBJ_DIR = .obj
@@ -34,7 +34,9 @@ $(OBJ_DIR)/$(DIR)/%.o: $(SRC_DIR)/$(DIR)/%.c $(INCLUDE) | $(OBJ_DIR)/$(DIR)
 	@printf "\033[0m\033[38;5;166m[$(DIR) \033[38;5;7m%3u%%\033[38;5;166m] \033[0m🌶  \033[38;5;226m$(@:$(OBJ_DIR)/$(DIR)/%.o=%.o) done\033[0m\n" $(PERCENT)
 
 $(NAME): $(OBJ)
-	@if [ ! $(N) = 0 ]; then ar rc $(NAME) $(OBJ); ranlib $(NAME); echo "\033[0m\033[38;5;166m[$(DIR) ∎∎∎∎] \033[0m🐹  \033[38;5;214m$@ done\033[0m"; else echo "\033[0m\033[38;5;166m[$(DIR) ∎∎∎∎] \033[0m🦁  \033[38;5;214mnothing to be done\033[0m"; fi
+	@ar rc $(NAME) $(OBJ)
+	@ranlib $(NAME)
+	@if [ ! $(N) = 0 ]; then echo "\033[0m\033[38;5;166m[$(DIR) ∎∎∎∎] \033[0m🐹  \033[38;5;214m$@ done\033[0m"; else echo "\033[0m\033[38;5;166m[$(DIR) ∎∎∎∎] \033[0m🐹  \033[38;5;214mnothing to be done\033[0m"; fi
 
 clean:
 	@rm -rf $(OBJ_DIR)/$(DIR)

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:42:49 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 16:13:00 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/31 19:48:14 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 static t_short_flag	g_short_flags[] =
 {
 	{'h', (void*)&print_usage},
-	{'d', (void*)&set_debug},
+	{'t', (void*)&set_text_section},
+	{'d', (void*)&set_data_section},
+	{'b', (void*)&set_bss_section},
 	{0, NULL}
 };
 
@@ -91,7 +93,8 @@ void	get_file(char *file, t_otool *otool)
 void	init_otool(t_otool *otool, int argc, char **argv)
 {
 	ft_bzero(otool, sizeof(t_otool));
-	ft_vector_init(&otool->files, sizeof(char*));
+	otool->opt = TEXT_SECTION;
+	ft_vector_init(&otool->files, ALLOC_MALLOC, sizeof(char*));
 	ft_add_errors((t_error*)&g_errors);
 	ft_get_flags(argc, argv, ft_get_flag_array((t_short_flag*)&g_short_flags,
 	(t_long_flag*)&g_long_flags, (void*)&get_default), otool);
@@ -100,8 +103,10 @@ void	init_otool(t_otool *otool, int argc, char **argv)
 		pipe(otool->pipe) == -1 || close(1) == -1 ||
 		dup2(otool->pipe[1], 1) == -1)
 		ft_error(2, ERROR_ON_FD, NULL);
-	ft_vector_init(&otool->segment_32, sizeof(struct segment_command*));
-	ft_vector_init(&otool->segment_64, sizeof(struct segment_command_64*));
+	ft_vector_init(&otool->segment_32, ALLOC_MALLOC,
+	sizeof(struct segment_command*));
+	ft_vector_init(&otool->segment_64, ALLOC_MALLOC,
+	sizeof(struct segment_command_64*));
 }
 
 int		main(int argc, char **argv)

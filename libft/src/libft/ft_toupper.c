@@ -12,15 +12,19 @@
 
 #include "libft.h"
 
-void	ft_strtoupper(char *str)
+char	*ft_strtoupper(char *str)
 {
+	char	*ret;
+
 	if (!str)
-		return ;
+		return (NULL);
+	ret = str;
 	while (*str)
 	{
 		*str = ft_toupper(*str);
 		str++;
 	}
+	return (ret);
 }
 
 int		ft_toupper(int c)

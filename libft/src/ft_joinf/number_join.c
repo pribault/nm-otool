@@ -20,12 +20,9 @@ void			print_number(va_list va, char *new, size_t *j, char *base)
 	int				b;
 	char			c;
 
-	ft_printf("va_arg?\n");
 	nbr = va_arg(va, int);
-	ft_printf("???\n");
 	pow = 1;
 	b = ft_strlen(base);
-	ft_printf("b=%d\n", b);
 	if (nbr < 0)
 	{
 		new[(*j)++] = '-';

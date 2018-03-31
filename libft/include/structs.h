@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/07 13:04:57 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/11 21:04:43 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/31 12:06:19 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,32 @@
 
 # define REALLOC_MULTIPLIER	2
 
+# define MALLOC_LOG_SIZE	1024
+
+typedef enum		e_log_type
+{
+	LOG_MALLOC_REQUEST,
+	LOG_MALLOC_RETURN,
+	LOG_REALLOC_REQUEST,
+	LOG_REALLOC_RETURN,
+	LOG_REALLOCF_REQUEST,
+	LOG_REALLOCF_RETURN,
+	LOG_CALLOC_REQUEST,
+	LOG_CALLOC_RETURN,
+	LOG_VALLOC_REQUEST,
+	LOG_VALLOC_RETURN,
+	LOG_FREE_REQUEST,
+	LOG_MMAP,
+	LOG_MUNMAP
+}					t_log_type;
+
+typedef struct		s_log
+{
+	t_log_type		type;
+	uint64_t		ptr;
+	uint64_t		size;
+}					t_log;
+
 typedef struct		s_alloc
 {
 	size_t			size;
@@ -50,6 +76,8 @@ typedef struct		s_env
 	t_zone			*large;
 	pthread_mutex_t	mutex;
 	char			*colors[COLORS];
+	t_circ_buffer	log;
+	char			**env;
 }					t_env;
 
 extern t_env		g_env;

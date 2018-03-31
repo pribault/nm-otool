@@ -1,33 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   flags_2.c                                          :+:      :+:    :+:   */
+/*   ft_circ_buffer_set_trash_callback.c                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 19:06:53 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 20:17:28 by pribault         ###   ########.fr       */
+/*   Created: 2018/03/28 11:49:16 by pribault          #+#    #+#             */
+/*   Updated: 2018/03/28 12:48:29 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_nm.h"
+#include "libft.h"
 
-void	set_numeric_sort(t_nm *nm)
+void	ft_circ_buffer_set_trash_callback(t_circ_buffer *buffer,
+		void (*callback)(void*, void*), void *data)
 {
-	nm->opt ^= NUMERIC_SORT;
-}
-
-void	set_only_undefined(t_nm *nm)
-{
-	nm->opt ^= ONLY_UNDEFINED;
-}
-
-void	set_no_undefined(t_nm *nm)
-{
-	nm->opt ^= NO_UNDEFINED;
-}
-
-void	set_only_global(t_nm *nm)
-{
-	nm->opt ^= ONLY_GLOBAL;
+	buffer->trash_callback = callback;
+	buffer->data = data;
 }

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 14:06:03 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/10 14:59:59 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/31 17:05:57 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ char		*ft_joinf(const char *format, ...)
 			len += get_next_arg(va, format, &i);
 		}
 	}
-	new = (char*)malloc(sizeof(char) * (len + i - 2 * n + 1));
-	ft_bzero(new, len + i - 2 * n + 1);
+	new = (char*)malloc(sizeof(char) * (len + i - n + 1));
+	ft_bzero(new, len + i - n + 1);
 	va_start(va, format);
 	fill_string(va, format, new);
 	va_end(va);

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:42:40 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 16:11:56 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/31 19:48:09 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@
 
 # define MACH_ENDIAN	BYTE(0)
 # define FAT_ENDIAN		BYTE(1)
-# define DEBUG			BYTE(7)
+# define DEBUG			BYTE(2)
+# define TEXT_SECTION	BYTE(3)
+# define DATA_SECTION	BYTE(4)
+# define BSS_SECTION	BYTE(5)
 # define ENDIAN(x)		(x & MACH_ENDIAN)
 
 # define STR_MAX		128
@@ -108,6 +111,9 @@ typedef struct	s_otool
 void			print_usage(void);
 void			set_debug(t_otool *otool);
 void			get_default(char *file, t_otool *otool);
+void			set_text_section(t_otool *otool);
+void			set_data_section(t_otool *otool);
+void			set_bss_section(t_otool *otool);
 
 /*
 **	output functions
@@ -149,13 +155,13 @@ t_ret			read_mach(t_otool *otool, void *ptr, char *name,
 				t_file_type type);
 t_ret			read_segment(t_otool *otool, void *ptr);
 t_ret			read_segment_64(t_otool *otool, void *ptr);
-t_ret			print_text_section_32(t_otool *otool, struct section *section,
+t_ret			print_section_32(t_otool *otool, struct section *section,
 				void *ptr, uint32_t size);
-t_ret			print_text_section_32_endian(t_otool *otool,
+t_ret			print_section_32_endian(t_otool *otool,
 				struct section *section, void *ptr, size_t size);
-t_ret			print_text_section_64(t_otool *otool,
+t_ret			print_section_64(t_otool *otool,
 				struct section_64 *section, void *ptr, uint64_t size);
-t_ret			print_text_section_64_endian(t_otool *otool,
+t_ret			print_section_64_endian(t_otool *otool,
 				struct section_64 *section, void *ptr, size_t size);
 
 char			*get_name(char *file);

@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   flags_2.c                                          :+:      :+:    :+:   */
+/*   ft_circ_buffer_del.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 19:06:53 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 20:17:28 by pribault         ###   ########.fr       */
+/*   Created: 2018/03/26 19:37:42 by pribault          #+#    #+#             */
+/*   Updated: 2018/03/31 17:29:16 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_nm.h"
+#include "libft.h"
 
-void	set_numeric_sort(t_nm *nm)
+void	ft_circ_buffer_del(t_circ_buffer *buffer)
 {
-	nm->opt ^= NUMERIC_SORT;
-}
-
-void	set_only_undefined(t_nm *nm)
-{
-	nm->opt ^= ONLY_UNDEFINED;
-}
-
-void	set_no_undefined(t_nm *nm)
-{
-	nm->opt ^= NO_UNDEFINED;
-}
-
-void	set_only_global(t_nm *nm)
-{
-	nm->opt ^= ONLY_GLOBAL;
+	if (buffer->alloc == ALLOC_MALLOC)
+	{
+		if (buffer->ptr)
+			free(buffer->ptr);
+	}
+	else if (buffer->alloc == ALLOC_MMAP)
+	{
+		if (buffer->ptr)
+			munmap(buffer->ptr, buffer->type * buffer->elems);
+	}
+	buffer->ptr = NULL;
+	buffer->elems = 0;
+	buffer->type = 0;
+	buffer->write_idx = 0;
+	buffer->read_idx = 0;
 }

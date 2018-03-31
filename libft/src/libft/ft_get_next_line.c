@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/10 18:50:13 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/03 11:59:27 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/31 17:24:00 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int				ft_get_next_line(int const fd, char **line)
 	int				r;
 
 	if (!stacks.type)
-		ft_vector_init(&stacks, sizeof(t_gnl_stack));
+		ft_vector_init(&stacks, ALLOC_MALLOC, sizeof(t_gnl_stack));
 	if (fd < 0 || read(fd, &r, 0) == -1 || !(stack = get_stack(&stacks, fd)))
 		return (-1);
 	if (stack->line[0])

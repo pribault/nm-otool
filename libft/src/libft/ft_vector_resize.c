@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/01 01:15:55 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/03 12:01:43 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/31 17:31:22 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,16 @@ void		ft_vector_resize(t_vector *vector, size_t new_size)
 	{
 		mem = VECTOR_SIZE * ((new_size * vector->type - 1) /
 		VECTOR_SIZE) + VECTOR_SIZE;
-		if (!(vector->ptr = vector_realloc(vector->ptr, vector->size, mem)))
-			return ;
+		if (vector->alloc == ALLOC_MALLOC)
+		{
+			if (!(vector->ptr = realloc(vector->ptr, mem)))
+				return ;
+		}
+		else if (vector->alloc == ALLOC_MMAP)
+		{
+			if (!(vector->ptr = vector_realloc(vector->ptr, vector->size, mem)))
+				return ;
+		}
 		vector->size = mem;
 	}
 	vector->n = new_size;

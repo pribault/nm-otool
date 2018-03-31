@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/03 10:42:26 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/15 22:46:48 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/31 15:41:00 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,15 @@
 
 void	claim_allocation(t_alloc *alloc, size_t size)
 {
-	size_t	mem;
+	t_alloc	*next;
 
 	alloc->type = TYPE_ALLOC;
 	if (alloc->size - size >= sizeof(t_alloc))
 	{
-		mem = alloc->size;
+		next = (void*)&alloc[1] + size;
+		next->type = TYPE_FREE;
+		next->size = alloc->size - size - sizeof(t_alloc);
 		alloc->size = size;
-		alloc = (void*)&alloc[1] + alloc->size;
-		alloc->type = TYPE_FREE;
-		alloc->size = mem - size - sizeof(t_alloc);
 	}
 }
 

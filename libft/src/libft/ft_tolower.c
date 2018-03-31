@@ -12,15 +12,19 @@
 
 #include "libft.h"
 
-void	ft_strtolower(char *str)
+char	*ft_strtolower(char *str)
 {
+	char	*ret;
+
 	if (!str)
-		return ;
+		return (NULL);
+	ret = str;
 	while (*str)
 	{
 		*str = ft_tolower(*str);
 		str++;
 	}
+	return (ret);
 }
 
 int		ft_tolower(int c)

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:41:36 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 19:24:41 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/31 20:17:40 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 # define NUMERIC_SORT	BYTE(5)
 # define ONLY_UNDEFINED	BYTE(6)
 # define NO_UNDEFINED	BYTE(7)
+# define ONLY_GLOBAL	BYTE(8)
 # define ENDIAN(x)		(x & MACH_ENDIAN)
 
 # define STR_MAX		128
@@ -145,6 +146,7 @@ void			set_reverse(t_nm *nm);
 void			set_numeric_sort(t_nm *nm);
 void			set_only_undefined(t_nm *nm);
 void			set_no_undefined(t_nm *nm);
+void			set_only_global(t_nm *nm);
 
 /*
 **	memory functions

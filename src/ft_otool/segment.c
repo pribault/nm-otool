@@ -6,13 +6,13 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 17:12:53 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 15:21:06 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/31 19:48:55 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_otool.h"
 
-t_ret	print_text_section_32(t_otool *otool, struct section *section,
+t_ret	print_section_32(t_otool *otool, struct section *section,
 		void *ptr, uint32_t size)
 {
 	uint32_t	i;
@@ -38,7 +38,7 @@ t_ret	print_text_section_32(t_otool *otool, struct section *section,
 	return (1);
 }
 
-t_ret	print_text_section_64(t_otool *otool, struct section_64 *section,
+t_ret	print_section_64(t_otool *otool, struct section_64 *section,
 		void *ptr, uint64_t size)
 {
 	uint64_t	i;
@@ -77,12 +77,17 @@ t_ret	read_segment(t_otool *otool, void *ptr)
 		if (!(section = ptr + sizeof(struct segment_command)
 			+ i * sizeof(struct section)))
 			return (0);
-		else if (!ft_strcmp((char*)&section->sectname, SECT_TEXT) &&
-			((ENDIAN(otool->opt) && !print_text_section_32_endian(otool,
-			section, otool->ptr + section->offset, section->size)) ||
-			((!ENDIAN(otool->opt) && !print_text_section_32(otool,
-			section, otool->ptr + section->offset, section->size)))))
-			return (0);
+		else if (((otool->opt & TEXT_SECTION) &&
+			!ft_strcmp((char*)&section->sectname, SECT_TEXT)) ||
+			((otool->opt & DATA_SECTION) &&
+			!ft_strcmp((char*)&section->sectname, SECT_DATA)) ||
+			((otool->opt & BSS_SECTION) &&
+			!ft_strcmp((char*)&section->sectname, SECT_BSS)))
+			if (((ENDIAN(otool->opt) && !print_section_32_endian(otool,
+				section, otool->ptr + section->offset, section->size)) ||
+				((!ENDIAN(otool->opt) && !print_section_32(otool,
+				section, otool->ptr + section->offset, section->size)))))
+				return (0);
 	return (1);
 }
 
@@ -96,15 +101,19 @@ t_ret	read_segment_64(t_otool *otool, void *ptr)
 		return (0);
 	i = (uint64_t)-1;
 	while (++i < segment->nsects)
-	{
-		section = ptr + sizeof(struct segment_command_64) + i *
-		sizeof(struct section_64);
-		if (!ft_strcmp((char*)&section->sectname, SECT_TEXT) &&
-			((ENDIAN(otool->opt) && !print_text_section_64_endian(otool,
-			section, otool->ptr + section->offset, section->size)) ||
-			((!ENDIAN(otool->opt) && !print_text_section_64(otool, section,
-			otool->ptr + section->offset, section->size)))))
+		if (!(section = ptr + sizeof(struct segment_command_64) + i *
+		sizeof(struct section_64)))
 			return (0);
-	}
+		else if (((otool->opt & TEXT_SECTION) &&
+			!ft_strcmp((char*)&section->sectname, SECT_TEXT)) ||
+			((otool->opt & DATA_SECTION) &&
+			!ft_strcmp((char*)&section->sectname, SECT_DATA)) ||
+			((otool->opt & BSS_SECTION) &&
+			!ft_strcmp((char*)&section->sectname, SECT_BSS)))
+			if (((ENDIAN(otool->opt) && !print_section_64_endian(otool,
+				section, otool->ptr + section->offset, section->size)) ||
+				((!ENDIAN(otool->opt) && !print_section_64(otool, section,
+				otool->ptr + section->offset, section->size)))))
+				return (0);
 	return (1);
 }

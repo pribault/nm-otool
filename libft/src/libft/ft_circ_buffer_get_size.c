@@ -1,33 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   flags_2.c                                          :+:      :+:    :+:   */
+/*   ft_circ_buffer_get_size.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 19:06:53 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 20:17:28 by pribault         ###   ########.fr       */
+/*   Created: 2018/03/27 15:53:46 by pribault          #+#    #+#             */
+/*   Updated: 2018/03/27 15:54:42 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_nm.h"
+#include "libft.h"
 
-void	set_numeric_sort(t_nm *nm)
+uint64_t	ft_circ_buffer_get_size(t_circ_buffer *buffer)
 {
-	nm->opt ^= NUMERIC_SORT;
-}
-
-void	set_only_undefined(t_nm *nm)
-{
-	nm->opt ^= ONLY_UNDEFINED;
-}
-
-void	set_no_undefined(t_nm *nm)
-{
-	nm->opt ^= NO_UNDEFINED;
-}
-
-void	set_only_global(t_nm *nm)
-{
-	nm->opt ^= ONLY_GLOBAL;
+	return (buffer->n);
 }

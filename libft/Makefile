@@ -8,7 +8,7 @@ FT_PRINTF = ft_printf
 FT_JOINF = ft_joinf
 DIR = .Makefiles
 EXT = Makefile
-JOBS = 4
+JOBS = 1
 
 .PHONY: clean fclean all re norme $(NAME)
 
@@ -23,7 +23,7 @@ $(NAME):
 	@make -f $(DIR)/$(FT_JOINF).$(EXT) $(NAME) -j$(JOBS)
 
 $(NAME_SO): $(NAME)
-	@$(CC) $(FLAGS) -shared -o $@ -L . -lft
+	# @$(CC) $(FLAGS) -shared -o $@ -L . -lft
 	@echo "\033[0m\033[38;5;166m[libft ∎∎∎∎] \033[0m🦁  \033[38;5;214m$@ done\033[0m"
 
 clean:

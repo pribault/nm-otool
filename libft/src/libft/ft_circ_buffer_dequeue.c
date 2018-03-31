@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   flags_2.c                                          :+:      :+:    :+:   */
+/*   ft_circ_buffer_dequeue.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 19:06:53 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 20:17:28 by pribault         ###   ########.fr       */
+/*   Created: 2018/03/27 08:26:43 by pribault          #+#    #+#             */
+/*   Updated: 2018/03/27 08:43:50 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_nm.h"
+#include "libft.h"
 
-void	set_numeric_sort(t_nm *nm)
+void	*ft_circ_buffer_dequeue(t_circ_buffer *buffer)
 {
-	nm->opt ^= NUMERIC_SORT;
-}
+	void	*result;
 
-void	set_only_undefined(t_nm *nm)
-{
-	nm->opt ^= ONLY_UNDEFINED;
-}
-
-void	set_no_undefined(t_nm *nm)
-{
-	nm->opt ^= NO_UNDEFINED;
-}
-
-void	set_only_global(t_nm *nm)
-{
-	nm->opt ^= ONLY_GLOBAL;
+	if (buffer->read_idx == buffer->write_idx)
+		return (NULL);
+	result = buffer->ptr + buffer->read_idx * buffer->type;
+	buffer->read_idx = (buffer->read_idx + 1) % buffer->elems;
+	buffer->n--;
+	return (result);
 }

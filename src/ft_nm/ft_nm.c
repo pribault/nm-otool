@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:39:41 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 19:23:38 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/31 20:15:39 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ static t_short_flag	g_short_flags[] =
 	{'p', (void*)&set_no_sort},
 	{'r', (void*)&set_reverse},
 	{'n', (void*)&set_numeric_sort},
-	{'u', (void*)set_only_undefined},
-	{'U', (void*)set_no_undefined},
+	{'u', (void*)&set_only_undefined},
+	{'U', (void*)&set_no_undefined},
+	{'g', (void*)&set_only_global},
 	{0, NULL}
 };
 
@@ -104,11 +105,11 @@ void	get_file(char *file, t_nm *nm)
 void	init_nm(t_nm *nm, int argc, char **argv)
 {
 	ft_bzero(nm, sizeof(t_nm));
-	ft_vector_init(&nm->files, sizeof(char*));
-	ft_vector_init(&nm->syms_32, sizeof(struct nlist));
-	ft_vector_init(&nm->syms_64, sizeof(struct nlist_64));
-	ft_vector_init(&nm->sect_32, sizeof(struct section));
-	ft_vector_init(&nm->sect_64, sizeof(struct section_64));
+	ft_vector_init(&nm->files, ALLOC_MALLOC, sizeof(char*));
+	ft_vector_init(&nm->syms_32, ALLOC_MALLOC, sizeof(struct nlist));
+	ft_vector_init(&nm->syms_64, ALLOC_MALLOC, sizeof(struct nlist_64));
+	ft_vector_init(&nm->sect_32, ALLOC_MALLOC, sizeof(struct section));
+	ft_vector_init(&nm->sect_64, ALLOC_MALLOC, sizeof(struct section_64));
 	ft_add_errors((t_error*)&g_errors);
 	ft_get_flags(argc, argv, ft_get_flag_array((t_short_flag*)&g_short_flags,
 	(t_long_flag*)&g_long_flags, (void*)&get_default), nm);

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 23:30:57 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/11 20:05:05 by pribault         ###   ########.fr       */
+/*   Updated: 2018/03/31 16:30:47 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ t_bool	free_in_zones(t_zone *zone, void *ptr)
 				prev)
 			{
 				prev->next = zone->next;
+				malloc_log(LOG_MUNMAP, (uint64_t)zone, zone->size);
 				munmap(zone, sizeof(t_zone) + zone->size);
 			}
 			return (FT_TRUE);

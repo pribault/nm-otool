@@ -10,7 +10,7 @@ SRCS =	ft_otool.c flags.c get.c\
 		get_2.c get_3.c get_4.c\
 		output.c endian.c fat.c\
 		archive.c archive_2.c mach.c\
-		segment.c segment_2.c
+		segment.c segment_2.c flags_2.c
 OBJS =	$(SRCS:%.c=$(OBJ)/%.o)
 LIBFT =	libft
 INCLUDE_LIBS =	-I $(LIBFT)/include

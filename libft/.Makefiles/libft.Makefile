@@ -8,6 +8,13 @@ SRC =	ft_abs.c\
 		ft_atou.c\
 		ft_atof.c\
 		ft_bzero.c\
+		ft_circ_buffer_del.c\
+		ft_circ_buffer_dequeue.c\
+		ft_circ_buffer_enqueue.c\
+		ft_circ_buffer_get_size.c\
+		ft_circ_buffer_get.c\
+		ft_circ_buffer_init.c\
+		ft_circ_buffer_set_trash_callback.c\
 		ft_error.c\
 		ft_execute.c\
 		ft_factorial.c\
@@ -66,6 +73,7 @@ SRC =	ft_abs.c\
 		ft_putstr.c\
 		ft_putstr_fd.c\
 		ft_rand.c\
+		ft_reduce_path.c\
 		ft_showtab.c\
 		ft_showtab_fd.c\
 		ft_sqrt.c\
@@ -135,7 +143,9 @@ $(OBJ_DIR)/$(DIR)/%.o: $(SRC_DIR)/$(DIR)/%.c $(INCLUDE) | $(OBJ_DIR)/$(DIR)
 	@printf "\033[0m\033[38;5;166m[$(DIR) \033[38;5;7m%3u%%\033[38;5;166m] \033[0m🌶  \033[38;5;226m$(@:$(OBJ_DIR)/$(DIR)/%.o=%.o) done\033[0m\n" $(PERCENT)
 
 $(NAME): $(OBJ)
-	@if [ ! $(N) = 0 ]; then ar rc $(NAME) $(OBJ); ranlib $(NAME); echo "\033[0m\033[38;5;166m[$(DIR) ∎∎∎∎] \033[0m🐹  \033[38;5;214m$@ done\033[0m"; else echo "\033[0m\033[38;5;166m[$(DIR) ∎∎∎∎] \033[0m🦁  \033[38;5;214mnothing to be done\033[0m"; fi
+	@ar rc $(NAME) $(OBJ)
+	@ranlib $(NAME)
+	@if [ ! $(N) = 0 ]; then echo "\033[0m\033[38;5;166m[$(DIR) ∎∎∎∎] \033[0m🐹  \033[38;5;214m$@ done\033[0m"; else echo "\033[0m\033[38;5;166m[$(DIR) ∎∎∎∎] \033[0m🐹  \033[38;5;214mnothing to be done\033[0m"; fi
 
 clean:
 	@rm -rf $(OBJ_DIR)/$(DIR)
