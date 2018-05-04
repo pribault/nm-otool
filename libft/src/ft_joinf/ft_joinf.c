@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 14:06:03 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 17:05:57 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/29 12:18:03 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ size_t		get_next_arg(va_list va, const char *format, size_t *i)
 		return (get_number_len(va, "01"));
 	else if (format[*i] == 's')
 		return (get_string_len(va));
+	else if (format[*i] == 'S')
+		return (get_unicode_len(va));
 	else if (format[*i] == 'c')
 		return (1);
 	return (0);
@@ -37,6 +39,8 @@ void		print_next_arg(va_list va, char *new, size_t *j, char c)
 {
 	if (c == 'd' || c == 'i')
 		print_number(va, new, j, "0123456789");
+	else if (c == 'u')
+		print_unsigned_base_join(va, new, j, "0123456789");
 	else if (c == 'x')
 		print_number(va, new, j, "0123456789abcdef");
 	else if (c == 'p')
@@ -47,6 +51,8 @@ void		print_next_arg(va_list va, char *new, size_t *j, char c)
 		print_number(va, new, j, "01");
 	else if (c == 's')
 		print_string(va, new, j);
+	else if (c == 'S')
+		print_unicode(va, new, j);
 	else if (c == 'c')
 		print_char_join(va, new, j);
 }
@@ -68,6 +74,7 @@ void		fill_string(va_list va, const char *format, char *new)
 		else
 			new[j++] = format[i++];
 	}
+	new[j] = '\0';
 }
 
 char		*ft_joinf(const char *format, ...)
@@ -91,7 +98,6 @@ char		*ft_joinf(const char *format, ...)
 		}
 	}
 	new = (char*)malloc(sizeof(char) * (len + i - n + 1));
-	ft_bzero(new, len + i - n + 1);
 	va_start(va, format);
 	fill_string(va, format, new);
 	va_end(va);

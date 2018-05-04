@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 21:25:16 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 19:32:13 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/03 18:04:05 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_ret	print_section_32_endian(t_otool *otool, struct section *section,
 	i = 0;
 	while (i + 3 < size)
 	{
-		if (i && !(i % SAVE_LINE))
+		if (!(i % SAVE_LINE))
 			save_output(otool);
 		if (!(i % 16))
 			ft_printf("%.8x\t", section->addr + i);
@@ -50,7 +50,7 @@ t_ret	print_section_64_endian(t_otool *otool,
 	i = 0;
 	while (i + 3 < size)
 	{
-		if (i && !(i % SAVE_LINE))
+		if (!(i % SAVE_LINE))
 			save_output(otool);
 		if (!(i % 16))
 			ft_printf("%.8x\t", section->addr + i);

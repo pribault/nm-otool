@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 16:32:36 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 15:37:36 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/03 18:20:57 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_ret	read_file_in_ar(char *lib, char *file, t_otool *otool)
 {
 	t_ret		ret;
 
-	if (!strcmp(file, SYMDEF_SORTED) || !strcmp(file, SYMDEF))
+	if (!ft_strcmp(file, SYMDEF_SORTED) || !ft_strcmp(file, SYMDEF))
 		return (RETURN_SUCCESS);
 	ft_printf("%s(%s):\n", lib, file);
 	if ((ret = read_fat(otool, otool->ptr, file)) !=
@@ -77,20 +77,20 @@ t_ret			read_ar(t_otool *otool, void *ptr, char *name)
 	uint64_t		save[2];
 
 	if (!(ar = get_prot(otool, ptr, SARMAG)) ||
-		strncmp(ar, ARMAG, SARMAG))
+		ft_strncmp(ar, ARMAG, SARMAG))
 		return (RETURN_UNKNOWN_FILE_FORMAT);
 	save[0] = (uint64_t)otool->ptr;
 	save[1] = otool->size;
 	ft_printf("Archive : %s\n", name);
 	while ((header = get_prot(otool, ptr + SARMAG, sizeof(struct ar_hdr))))
 	{
-		if (strncmp((char*)&header->ar_fmag, ARFMAG, 2) ||
+		if (ft_strncmp((char*)&header->ar_fmag, ARFMAG, 2) ||
 			!get_prot(otool, (void*)header + sizeof(struct ar_hdr),
 			ft_atou((char*)&header->ar_size)))
 			return (RETURN_FILE_CORRUPTED);
-		if ((!strncmp((char*)&header->ar_name, "#1/", 3) && read_ar_2(otool,
+		if ((!ft_strncmp((char*)&header->ar_name, "#1/", 3) && read_ar_2(otool,
 			header, name, (uint64_t*)&save) != RETURN_SUCCESS) ||
-			(strncmp((char*)&header->ar_name, "#1/", 3) && read_ar_3(otool,
+			(ft_strncmp((char*)&header->ar_name, "#1/", 3) && read_ar_3(otool,
 			header, name, (uint64_t*)&save) != RETURN_SUCCESS))
 			return (RETURN_FILE_CORRUPTED);
 		restore_otool(otool, (void*)save[0], save[1], RETURN_SUCCESS);

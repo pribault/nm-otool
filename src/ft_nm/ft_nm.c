@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:39:41 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 20:15:39 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/04 17:40:03 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ t_error		g_errors[] =
 	{ERROR_FILE_CORRUPTED, "'%s': file corrupted", 0},
 	{ERROR_ON_FD, "error setting file descriptors", ERROR_EXIT},
 	{ERROR_EMPTY_FILE, "%s empty", 0},
+	{ERROR_GETTING_ARCH, "cannot get arch", ERROR_EXIT},
 	{0, NULL, 0}
 };
 
@@ -55,7 +56,7 @@ void	reset_nm(t_nm *nm)
 	nm->ptr = NULL;
 	nm->stroff = 0;
 	nm->size = 0;
-	nm->opt &= ~(MACH_ENDIAN | FAT_ENDIAN);
+	nm->opt &= ~(MACH_ENDIAN | FAT_ENDIAN | LOCAL_ARCH);
 }
 
 void	read_file(char *file, t_nm *nm)
@@ -64,14 +65,20 @@ void	read_file(char *file, t_nm *nm)
 
 	if ((ret = read_fat(nm, nm->ptr, file)) == RETURN_SUCCESS)
 		return (print_output(nm));
+	else
+		clean_output(nm);
 	if (ret == RETURN_FILE_CORRUPTED)
 		return (ft_error(2, ERROR_FILE_CORRUPTED, file));
 	if ((ret = read_mach(nm, nm->ptr, file, TYPE_MACH)) == RETURN_SUCCESS)
 		return (print_output(nm));
+	else
+		clean_output(nm);
 	if (ret == RETURN_FILE_CORRUPTED)
 		return (ft_error(2, ERROR_FILE_CORRUPTED, file));
 	if ((ret = read_ar(nm, nm->ptr, file)) == RETURN_SUCCESS)
 		return (print_output(nm));
+	else
+		clean_output(nm);
 	if (ret == RETURN_FILE_CORRUPTED)
 		return (ft_error(2, ERROR_FILE_CORRUPTED, file));
 	ft_error(2, ERROR_UNKNOWN_FILE_FORMAT, file);
@@ -92,8 +99,8 @@ void	get_file(char *file, t_nm *nm)
 	if (!buff.st_size)
 		return (ft_error(2, ERROR_EMPTY_FILE, file));
 	nm->size = buff.st_size;
-	if (!(nm->ptr = mmap(NULL, buff.st_size, PROT_READ | PROT_WRITE,
-		MAP_PRIVATE | MAP_FILE, fd, 0)))
+	if ((nm->ptr = mmap(NULL, buff.st_size, PROT_READ | PROT_WRITE,
+		MAP_PRIVATE | MAP_FILE, fd, 0)) == MAP_FAILED)
 		return (ft_error(2, ERROR_ALLOCATION, NULL));
 	read_file(file, nm);
 	if (munmap(nm->ptr, buff.st_size) == -1)

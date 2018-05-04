@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/31 18:15:43 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 18:17:18 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/01 16:58:12 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,18 @@ char			*ft_reduce_path(char *path)
 	uint64_t	prev;
 	uint64_t	i;
 
-	prev = (uint64_t)-1;
 	i = (uint64_t)0;
 	while (path[i])
 	{
 		while (path[i] == '/')
-			i++;
-		if (path[i])
+			if (i && path[i - 1] == '/')
+				ft_memcpy(&path[i], &path[i + 1], ft_strlen(&path[i + 1]) + 1);
+			else
+				i++;
+		if (path[i] != '/')
 		{
-			prev = get_prev(path, i);
-			elem = get_elem(&path[i]);
-			if (!ft_strcmp(elem, "..") && prev != (uint64_t)-1)
+			if (!ft_strcmp((elem = get_elem(&path[i])), "..") &&
+				(prev = get_prev(path, i)) != (uint64_t)-1)
 				i = reduce_superior(path, prev, i);
 			else if (!ft_strcmp(elem, "."))
 				reduce_current(&path[i]);

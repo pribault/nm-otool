@@ -1,18 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_vector_get.c                                    :+:      :+:    :+:   */
+/*   ft_vector_find.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/01 01:43:35 by pribault          #+#    #+#             */
-/*   Updated: 2018/04/11 00:36:46 by pribault         ###   ########.fr       */
+/*   Created: 2018/04/10 12:07:37 by pribault          #+#    #+#             */
+/*   Updated: 2018/04/10 12:36:47 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_vector_get(t_vector *vector, size_t n)
+size_t	ft_vector_find(t_vector *vector, void *ptr)
 {
-	return ((!vector) ? NULL : vector->ptr + vector->type * n);
+	size_t	i;
+
+	i = (size_t)-1;
+	while (++i < vector->n)
+		if (!ft_memcmp(ft_vector_get(vector, i), ptr, vector->type))
+			return (i);
+	return ((size_t)-1);
 }

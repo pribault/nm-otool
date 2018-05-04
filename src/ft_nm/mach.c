@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 21:50:45 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 18:25:57 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/04 17:54:27 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ int		read_symtab_64(t_nm *nm, void *ptr)
 			return (0);
 		if (get_str(nm, nm->ptr + symtab->stroff + nlist->n_un.n_strx))
 			ft_vector_add(&nm->syms_64, nlist);
-		else
-			return (0);
 	}
 	return (1);
 }
@@ -72,7 +70,7 @@ t_ret	read_mach_32(t_nm *nm, void *ptr, char *name, t_file_type type)
 
 	if (!(header = get_mach_header(nm, ptr)))
 		return (RETURN_FILE_CORRUPTED);
-	if (type == TYPE_FAT)
+	if (type == TYPE_FAT && !(nm->opt & LOCAL_ARCH))
 		ft_printf("\n%s (for architecture %s):\n", name,
 		get_cpu_type(header->cputype));
 	i[0] = 0;
@@ -101,7 +99,7 @@ t_ret	read_mach_64(t_nm *nm, void *ptr, char *name, t_file_type type)
 
 	if (!(header = get_mach_header_64(nm, ptr)))
 		return (RETURN_FILE_CORRUPTED);
-	if (type == TYPE_FAT)
+	if (type == TYPE_FAT && !(nm->opt & LOCAL_ARCH))
 		ft_printf("\n%s (for architecture %s):\n", name,
 		get_cpu_type(header->cputype));
 	i[0] = 0;
@@ -126,7 +124,8 @@ t_ret	read_mach(t_nm *nm, void *ptr, char *name, t_file_type type)
 {
 	uint32_t	*magic;
 
-	if (type == TYPE_MACH && nm->files.n > 1)
+	if (nm->files.n > 1 && (type == TYPE_MACH ||
+		(type == TYPE_FAT && (nm->opt & LOCAL_ARCH))))
 		ft_printf("\n%s:\n", name);
 	if (!(magic = get_prot(nm, ptr, sizeof(uint32_t))))
 		return (RETURN_UNKNOWN_FILE_FORMAT);

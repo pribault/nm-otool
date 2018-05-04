@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 17:12:53 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 19:48:55 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/04 18:06:28 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_ret	print_section_32(t_otool *otool, struct section *section,
 	while (i < size)
 	{
 		if (i && !(i % SAVE_LINE))
-			print_output(otool);
+			save_output(otool);
 		if (!(i % 16))
 			ft_printf("%.8x\t", section->addr + i);
 		ft_printf((!((i + 1) % 16)) ? "%.2x \n" : "%.2x ",
@@ -34,7 +34,7 @@ t_ret	print_section_32(t_otool *otool, struct section *section,
 	}
 	if (i % 16)
 		ft_putchar('\n');
-	print_output(otool);
+	save_output(otool);
 	return (1);
 }
 
@@ -51,7 +51,7 @@ t_ret	print_section_64(t_otool *otool, struct section_64 *section,
 	while (i < size)
 	{
 		if (i && !(i % SAVE_LINE))
-			print_output(otool);
+			save_output(otool);
 		if (!(i % 16))
 			ft_printf("%.16lx\t", section->addr + i);
 		ft_printf((!((i + 1) % 16)) ? "%.2x \n" : "%.2x ",
@@ -60,7 +60,7 @@ t_ret	print_section_64(t_otool *otool, struct section_64 *section,
 	}
 	if (i % 16)
 		ft_putchar('\n');
-	print_output(otool);
+	save_output(otool);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 13:15:41 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/10 14:51:37 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/02 17:47:21 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ void		ft_error(int fd, int error, void *param)
 		return ;
 	i = (size_t)-1;
 	while (g_ft_errors[++i].format)
-		if (error == g_ft_errors[i].error_code && (format =
-			ft_joinf("\e[0m\e[38;5;124m\e[4mError:\e[0m %s\e[0m\n",
-			g_ft_errors[i].format)))
+		if (error == g_ft_errors[i].error_code)
 		{
-			if ((s = ft_joinf(format, param)))
+			if ((format =
+				ft_joinf("\e[0m\e[38;5;124m\e[4mError:\e[0m %s\e[0m\n",
+				g_ft_errors[i].format)) && (s = ft_joinf(format, param)))
 			{
 				ft_putstr_fd(s, fd);
 				free(s);

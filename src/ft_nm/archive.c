@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 21:50:56 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/10 21:18:18 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/03 18:29:17 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@ static t_ret	read_file_in_ar(char *lib, char *file, t_nm *nm)
 {
 	t_ret		ret;
 
-	if (!file || !get_str(nm, file))
+	if (!file)
 		return (RETURN_FILE_CORRUPTED);
-	if (!strcmp(file, SYMDEF_SORTED) || !strcmp(file, SYMDEF))
+	if (!ft_strcmp(file, SYMDEF_SORTED) || !ft_strcmp(file, SYMDEF))
 		return (RETURN_SUCCESS);
 	ft_printf("\n%s(%s):\n", lib, file);
 	if ((ret = read_fat(nm, nm->ptr, file)) !=
 		RETURN_UNKNOWN_FILE_FORMAT)
 		return (ret);
-	if ((ret = read_mach(nm, nm->ptr, file, TYPE_MACH)) !=
+	if ((ret = read_mach(nm, nm->ptr, file, TYPE_AR)) !=
 		RETURN_UNKNOWN_FILE_FORMAT)
 		return (ret);
 	if ((ret = read_ar(nm, nm->ptr, file)) !=
@@ -76,20 +76,20 @@ t_ret			read_ar(t_nm *nm, void *ptr, char *name)
 	uint64_t		save[2];
 
 	if (!(ar = get_prot(nm, ptr, SARMAG)) ||
-		strncmp(ar, ARMAG, SARMAG))
+		ft_strncmp(ar, ARMAG, SARMAG))
 		return (RETURN_UNKNOWN_FILE_FORMAT);
 	ptr += SARMAG;
 	save[0] = (uint64_t)nm->ptr;
 	save[1] = nm->size;
 	while ((header = get_prot(nm, ptr, sizeof(struct ar_hdr))))
 	{
-		if (strncmp((char*)&header->ar_fmag, ARFMAG, 2) ||
+		if (ft_strncmp((char*)&header->ar_fmag, ARFMAG, 2) ||
 			!get_prot(nm, (void*)header + sizeof(struct ar_hdr),
 			ft_atou((char*)&header->ar_size)))
 			return (RETURN_FILE_CORRUPTED);
-		if ((!strncmp((char*)&header->ar_name, "#1/", 3) && read_ar_2(nm,
+		if ((!ft_strncmp((char*)&header->ar_name, "#1/", 3) && read_ar_2(nm,
 			header, name, (uint64_t*)&save) != RETURN_SUCCESS) ||
-			(strncmp((char*)&header->ar_name, "#1/", 3) && read_ar_3(nm,
+			(ft_strncmp((char*)&header->ar_name, "#1/", 3) && read_ar_3(nm,
 			header, name, (uint64_t*)&save) != RETURN_SUCCESS))
 			return (RETURN_FILE_CORRUPTED);
 		restore_nm(nm, (void*)save[0], save[1], RETURN_SUCCESS);

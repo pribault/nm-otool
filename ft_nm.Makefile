@@ -1,6 +1,6 @@
 NAME =	ft_nm
 CC =	clang
-FLAGS =	-Wall -Wextra -Werror -Ofast -O3
+FLAGS =	-Wall -Wextra
 INC =	include
 INCLUDE =	ft_nm.h
 INCLUDES =	$(INCLUDE:%.h=$(INC)/%.h)

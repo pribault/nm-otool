@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/11 16:51:52 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/24 16:01:25 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/04 18:17:16 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_ret	read_mach_32(t_otool *otool, void *ptr, char *name, t_file_type type)
 
 	if (!(header = get_mach_header(otool, ptr)))
 		return (RETURN_FILE_CORRUPTED);
-	if (type == TYPE_FAT)
+	if (type == TYPE_FAT && !(otool->opt & HOST_ARCH))
 		ft_printf("%s (architecture %s):\n", name,
 		get_cpu_type(header->cputype));
 	i[0] = 0;
@@ -88,7 +88,7 @@ t_ret	read_mach_64(t_otool *otool, void *ptr, char *name, t_file_type type)
 
 	if (!(header = get_mach_header_64(otool, ptr)))
 		return (RETURN_FILE_CORRUPTED);
-	if (type == TYPE_FAT)
+	if (type == TYPE_FAT && !(otool->opt & HOST_ARCH))
 		ft_printf("%s (architecture %s):\n", name,
 		get_cpu_type(header->cputype));
 	i[0] = 0;
@@ -115,17 +115,12 @@ t_ret	read_mach(t_otool *otool, void *ptr, char *name, t_file_type type)
 
 	if (!(magic = get_prot(otool, ptr, sizeof(uint32_t))))
 		return (RETURN_UNKNOWN_FILE_FORMAT);
+	if (type == TYPE_MACH ||
+		(type == TYPE_FAT && (otool->opt & HOST_ARCH)))
+		ft_printf("%s:\n", name);
 	if (*magic == MH_MAGIC || *magic == MH_CIGAM)
-	{
-		if (type == TYPE_MACH)
-			ft_printf("%s:\n", name);
 		return (read_mach_32(otool, ptr, name, type));
-	}
 	else if (*magic == MH_MAGIC_64 || *magic == MH_CIGAM_64)
-	{
-		if (type == TYPE_MACH)
-			ft_printf("%s:\n", name);
 		return (read_mach_64(otool, ptr, name, type));
-	}
 	return (RETURN_UNKNOWN_FILE_FORMAT);
 }

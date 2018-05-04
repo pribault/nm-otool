@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/07 09:58:00 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 11:51:20 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/11 23:05:35 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include <stdlib.h>
 # include <inttypes.h>
+
+# define MALLOC_OK			BYTE(0)
+# define MALLOC_CORRUPTED	BYTE(1)
 
 void		*malloc(size_t size);
 void		*calloc(size_t nmemb, size_t size);
@@ -28,5 +31,7 @@ void		show_alloc_mem_ex(void);
 void		malloc_print_logs(void);
 
 void		malloc_set_env(char **env);
+
+int			check_malloc(void);
 
 #endif

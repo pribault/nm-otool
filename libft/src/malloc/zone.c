@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/03 09:37:43 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 15:41:08 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/02 17:44:23 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ t_zone	*create_zone(size_t size, char *name)
 
 	size = ((size + sizeof(t_zone) + sizeof(t_alloc) - 1) / getpagesize()) *
 	getpagesize() + getpagesize();
-	if (!(zone = mmap(NULL, size, PROT_READ | PROT_WRITE,
-		MAP_PRIVATE | MAP_ANON, -1, 0)))
+	if ((zone = mmap(NULL, size, PROT_READ | PROT_WRITE,
+		MAP_PRIVATE | MAP_ANON, -1, 0)) == MAP_FAILED)
 	{
 		malloc_error(ERROR_MMAP, NULL);
 		return (NULL);

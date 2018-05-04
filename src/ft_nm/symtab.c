@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/04 14:30:21 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 20:27:11 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/03 18:16:42 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ void	print_symtab_32(t_nm *nm)
 		else if (c != '?' && !(nm->opt & ONLY_UNDEFINED))
 			ft_printf("%.8lx %c %s\n", nlist->n_value, c,
 			nm->ptr + nm->stroff + nlist->n_un.n_strx);
+		if (i && !(i % SAVE_LINE))
+			save_output(nm);
 	}
+	save_output(nm);
 }
 
 void	sort_symtab_64(t_nm *nm)
@@ -95,5 +98,8 @@ void	print_symtab_64(t_nm *nm)
 			(!(nm->opt & ONLY_GLOBAL) || (nlist->n_type & N_EXT)))
 			ft_printf("%.16lx %c %s\n", nlist->n_value, c,
 			nm->ptr + nm->stroff + nlist->n_un.n_strx);
+		if (!(i % SAVE_LINE))
+			save_output(nm);
 	}
+	save_output(nm);
 }

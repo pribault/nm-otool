@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:42:40 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 19:48:09 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/04 18:02:13 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,14 @@
 # define TEXT_SECTION	BYTE(3)
 # define DATA_SECTION	BYTE(4)
 # define BSS_SECTION	BYTE(5)
+# define LOCAL_ARCH		BYTE(6)
 # define ENDIAN(x)		(x & MACH_ENDIAN)
 
 # define STR_MAX		128
 
 # define SAVE_LINE		8192
+
+# define HOST_ARCH		CPU_TYPE_X86_64
 
 /*
 *************

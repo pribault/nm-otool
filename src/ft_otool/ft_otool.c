@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:42:49 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 19:48:14 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/04 18:21:33 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	reset_otool(t_otool *otool)
 {
 	otool->ptr = NULL;
 	otool->size = 0;
-	otool->opt &= ~(MACH_ENDIAN | FAT_ENDIAN);
+	otool->opt &= ~(MACH_ENDIAN | FAT_ENDIAN | LOCAL_ARCH);
 }
 
 void	read_file(char *file, t_otool *otool)
@@ -52,16 +52,24 @@ void	read_file(char *file, t_otool *otool)
 
 	if ((ret = read_fat(otool, otool->ptr, file)) == RETURN_SUCCESS)
 		return (print_output(otool));
+	else
+		clean_output(otool);
 	if (ret == RETURN_FILE_CORRUPTED)
 		return (ft_error(2, ERROR_FILE_CORRUPTED, file));
 	if ((ret = read_mach(otool, otool->ptr, file, TYPE_MACH)) == RETURN_SUCCESS)
 		return (print_output(otool));
+	else
+		clean_output(otool);
 	if (ret == RETURN_FILE_CORRUPTED)
 		return (ft_error(2, ERROR_FILE_CORRUPTED, file));
 	if ((ret = read_ar(otool, otool->ptr, file)) == RETURN_SUCCESS)
 		return (print_output(otool));
+	else
+		clean_output(otool);
 	if (ret == RETURN_FILE_CORRUPTED)
 		return (ft_error(2, ERROR_FILE_CORRUPTED, file));
+	ft_printf("%s: is not an object file\n", file);
+	print_output(otool);
 	ft_error(2, ERROR_UNKNOWN_FILE_FORMAT, file);
 }
 
@@ -80,8 +88,8 @@ void	get_file(char *file, t_otool *otool)
 	if (!buff.st_size)
 		return (ft_error(2, ERROR_EMPTY_FILE, file));
 	otool->size = buff.st_size;
-	if (!(otool->ptr = mmap(NULL, buff.st_size, PROT_READ | PROT_WRITE,
-		MAP_PRIVATE | MAP_FILE, fd, 0)))
+	if ((otool->ptr = mmap(NULL, buff.st_size, PROT_READ | PROT_WRITE,
+		MAP_PRIVATE | MAP_FILE, fd, 0)) == MAP_FAILED)
 		return (ft_error(2, ERROR_ALLOCATION, NULL));
 	read_file(file, otool);
 	if (munmap(otool->ptr, buff.st_size) == -1)

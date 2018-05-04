@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/01 01:15:55 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 17:31:22 by pribault         ###   ########.fr       */
+/*   Updated: 2018/04/02 17:45:20 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static void	*vector_realloc(void *ptr, size_t size, size_t new_size)
 {
 	void	*new_ptr;
 
-	if (!(new_ptr = mmap(NULL, new_size, PROT_READ | PROT_WRITE,
-		MAP_PRIVATE | MAP_ANON, -1, 0)))
+	if ((new_ptr = mmap(NULL, new_size, PROT_READ | PROT_WRITE,
+		MAP_PRIVATE | MAP_ANON, -1, 0)) == MAP_FAILED)
 		return (NULL);
 	ft_memcpy(new_ptr, ptr, size);
 	munmap(ptr, size);

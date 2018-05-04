@@ -6,7 +6,7 @@
 /*   By: pribault <pribault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 11:41:36 by pribault          #+#    #+#             */
-/*   Updated: 2018/03/31 20:17:40 by pribault         ###   ########.fr       */
+/*   Updated: 2018/05/04 18:02:19 by pribault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <mach-o/ranlib.h>
 # include <mach-o/loader.h>
 # include <mach-o/nlist.h>
+# include <mach-o/arch.h>
 # include <mach-o/fat.h>
 # include <sys/stat.h>
 # include <sys/mman.h>
@@ -45,9 +46,14 @@
 # define ONLY_UNDEFINED	BYTE(6)
 # define NO_UNDEFINED	BYTE(7)
 # define ONLY_GLOBAL	BYTE(8)
+# define LOCAL_ARCH		BYTE(9)
 # define ENDIAN(x)		(x & MACH_ENDIAN)
 
 # define STR_MAX		128
+
+# define SAVE_LINE		128
+
+# define HOST_ARCH		CPU_TYPE_X86_64
 
 /*
 *************
@@ -63,6 +69,7 @@ typedef enum	e_nm_error
 	ERROR_FILE_CORRUPTED,
 	ERROR_ON_FD,
 	ERROR_EMPTY_FILE,
+	ERROR_GETTING_ARCH,
 	ERROR_NM_MAX
 }				t_nm_error;
 
@@ -100,6 +107,8 @@ typedef struct	s_nm
 	int			out;
 	int			null;
 	int			pipe[2];
+	void		*buffer;
+	size_t		buffer_size;
 }				t_nm;
 
 /*
@@ -205,6 +214,7 @@ t_ret			read_segment_64(t_nm *nm, void *ptr);
 */
 
 void			clean_output(t_nm *nm);
+void			save_output(t_nm *nm);
 void			print_output(t_nm *nm);
 void			print_output_to(t_nm *nm, int fd);
 
